@@ -1,9 +1,30 @@
--- get list issue, body can update, 
--- feature :
--- update issue (body)
--- list history issue
--- delete history issue
--- delete issue
--- add author
--- add label
--- edit issue by file number
+-- gh issue list 
+local picker = require "utils.picker"
+local ghIssue = require('gh.utils')
+local M = {}
+
+M.getListIssue = function()
+  local list_issue = {}
+  local getIssue = vim.api.nvim_command_output("echo system('gh issue list')")
+  for word in string.gmatch(getIssue, "[^\r\n]+") do
+    table.insert(list_issue, word)
+  end
+
+  local function callback(selection)
+    local getIssueNumber = selection[1]:gsub("\t.*", "")
+    ghIssue(getIssueNumber)
+  end
+
+  picker({
+    opts = list_issue,
+    callBack = callback,
+    isPreview = true,
+    title = 'choose your issue'
+  })
+end
+
+M.getListIssueHistory = function ()
+-- use regex for open issue file and auto
+end
+
+return M
