@@ -1,5 +1,0 @@
--- require('gh')
--- maps
--- getlist issue
--- gethistory
--- add issue

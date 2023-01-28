@@ -1,4 +1,4 @@
-local picker = require "configs.file.telescope.utils.picker"
+local picker = require "nvim-muryp-git.utils.picker"
 
 return function()
   local list_branch_obj = {}

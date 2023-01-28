@@ -1,5 +1,5 @@
 -- gh issue list 
-local picker = require "utils.picker"
+local picker = require "nvim-muryp-git-utils.picker"
 local ghIssue = require('gh.utils')
 local M = {}
 
