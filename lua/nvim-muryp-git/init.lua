@@ -1,8 +1,32 @@
--- local M = {}
--- M.getIssue = require('gh').getListIssue()
-require('nvim-muryp-git.telescope.gh').getListIssue()
--- maps
--- getlist issue
--- gethistory
--- add issue
--- return M
+local M = {}
+M.gh = {
+  issue = function()
+    require('nvim-muryp-git.telescope.gh').getListIssue()
+  end
+}
+M.git = {
+  flow = function()
+    require('nvim-muryp-git.telescope.gitFlow')
+  end,
+  commit = function()
+
+  end,
+  push = function()
+
+  end,
+  add = function()
+
+  end,
+}
+M.workSpace = function()
+  require('nvim-muryp-git.telescope.workspace')
+end
+
+M.setup = {
+  -- mapping
+  -- opts :
+  -- tmux/float/split/full terminal (nvim)
+  -- ssh dir
+}
+
+return M

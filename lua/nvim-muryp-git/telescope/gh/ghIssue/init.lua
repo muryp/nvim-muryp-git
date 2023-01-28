@@ -43,8 +43,8 @@ local ghIssue = function(issue_number)
     end
     return 'CLOSED'
   end
-  local FILE_NAME = "/gh-issue-" ..
-      '[' .. issue_number .. ']_' .. GET_ISSUE_DATA_OBJ.title .. '_' .. isIssueOpen() .. ".md"
+  local FILE_NAME = "/gh_issue-" ..
+      '-' .. issue_number .. '-' .. string.gsub(GET_ISSUE_DATA_OBJ.title,' ','_') .. '-' .. isIssueOpen() .. ".md"
   local FILE_PWD = DIR_LOC_HISTORY .. FILE_NAME
   local HELP_HEADER = [[
 <!--
