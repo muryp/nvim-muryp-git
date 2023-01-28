@@ -1,0 +1,9 @@
+-- get list issue, body can update, 
+-- feature :
+-- update issue (body)
+-- list history issue
+-- delete history issue
+-- delete issue
+-- add author
+-- add label
+-- edit issue by file number
