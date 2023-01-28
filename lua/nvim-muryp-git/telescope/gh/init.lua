@@ -1,7 +1,7 @@
--- gh issue list 
-local picker = require "nvim-muryp-git-utils.picker"
-local ghIssue = require('gh.utils')
-local M = {}
+-- gh issue list
+local picker  = require "nvim-muryp-git.utils.picker"
+local ghIssue = require('nvim-muryp-git.telescope.gh.ghIssue')
+local M       = {}
 
 M.getListIssue = function()
   local list_issue = {}
@@ -23,8 +23,8 @@ M.getListIssue = function()
   })
 end
 
-M.getListIssueHistory = function ()
--- use regex for open issue file and auto
+M.getListIssueHistory = function()
+  -- use regex for open issue file and auto
 end
 
 return M

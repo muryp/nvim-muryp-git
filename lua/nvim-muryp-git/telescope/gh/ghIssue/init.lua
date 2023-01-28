@@ -62,6 +62,6 @@ NOTE : puth text under comment(all comment eddit is no effect )
   os.execute("mkdir " .. DIR_LOC_HISTORY)
   os.execute('echo "' .. HELP_HEADER .. ISSUE_GENERATE .. '" > ' .. FILE_PWD)
   vim.cmd('e ' .. FILE_PWD)
-  require('nvim-muryp-git.gh.ghIssue.maps').maps()
+  require('nvim-muryp-git.telescope.gh.ghIssue.maps').maps()
 end
 return ghIssue

@@ -24,7 +24,7 @@ M.maps = function()
   local key = vim.keymap.set
   local opts = { buffer = true }
   local keymaps = "<leader><leader>"
-  local import = ":lua require('core.plugins.ghIssue.maps')"
+  local import = ":lua require('nvim-muryp-git.telescope.gh.ghIssue.maps')"
   key("n", keymaps .. "p", import .. ".push()<CR>", opts)
   key("n", keymaps .. "e", import .. ".edit()<CR>", opts)
   key("n", keymaps .. "o", import .. ".open()<CR>", opts)

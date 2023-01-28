@@ -1,14 +1,14 @@
 return function(arg)
-  local pickers = require "telescope.pickers"
-  local previewers = require "telescope.previewers"
-  local finders = require "telescope.finders"
-  local actions = require "telescope.actions"
-  local conf = require("telescope.config").values
+  local pickers      = require "telescope.pickers"
+  local previewers   = require "telescope.previewers"
+  local finders      = require "telescope.finders"
+  local actions      = require "telescope.actions"
+  local conf         = require("telescope.config").values
   local action_state = require "telescope.actions.state"
-  local callback = arg.callBack
-  local opts = arg.opts
-  local preview_arg = arg.isPreview
-  local title = arg.title
+  local callback     = arg.callBack
+  local opts         = arg.opts
+  local preview_arg  = arg.isPreview
+  local title        = arg.title
 
   local showPreview
   if preview_arg == true then
