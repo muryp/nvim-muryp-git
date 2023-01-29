@@ -1,5 +1,0 @@
--- get list git add
--- telescope
--- select
--- list
--- cmd git add list
