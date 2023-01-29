@@ -14,9 +14,9 @@ M.git = {
   push = function()
 
   end,
-  add = function()
+  conflicMerge = function()
 
-  end,
+  end
 }
 M.workSpace = function()
   require('nvim-muryp-git.telescope.workspace')

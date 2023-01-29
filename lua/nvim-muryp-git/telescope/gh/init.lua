@@ -11,8 +11,15 @@ M.getListIssue = function()
   end
 
   local function callback(selection)
-    local getIssueNumber = selection[1]:gsub("\t.*", "")
-    ghIssue(getIssueNumber)
+    if type(selection) == 'string' then
+      local getIssueNumber = selection:gsub("\t.*", "")
+      ghIssue(getIssueNumber)
+      return
+    end
+    for _, value in pairs(selection) do
+      local getIssueNumber = value:gsub("\t.*", "")
+      ghIssue(getIssueNumber)
+    end
   end
 
   picker({

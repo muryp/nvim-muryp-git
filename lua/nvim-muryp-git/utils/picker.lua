@@ -32,11 +32,21 @@ return function(arg)
     attach_mappings = function(prompt_bufnr, _)
       -- modifying what happens on selection with <CR>
       actions.select_default:replace(function()
-        -- closing picker
+        local MULTI_SELECT = action_state.get_current_picker(prompt_bufnr)._multi._entries
         actions.close(prompt_bufnr)
-        local selection = action_state.get_selected_entry()
-        callback(selection)
-        -- do stuff
+        local SELECTION_TABLE = {}
+        local TABLE_LENG = 0
+        for key, _ in pairs(MULTI_SELECT) do
+          table.insert(SELECTION_TABLE, key[1])
+          TABLE_LENG = TABLE_LENG + 1
+        end
+        local selection = function()
+          if TABLE_LENG == 0 then
+            return action_state.get_selected_entry()[1]
+          end
+          return SELECTION_TABLE
+        end
+        callback(selection())
       end)
       -- keep default keybindings
       return true
