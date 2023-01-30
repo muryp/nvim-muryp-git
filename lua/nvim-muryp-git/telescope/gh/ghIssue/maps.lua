@@ -19,7 +19,7 @@ M.push = function()
   local variable       = getVar()
   local getCurrentFile = variable.getCurrentFile
   local getIssue       = variable.getIssue
-  local getBody        = getCurrentFile:gsub("<!--.*-->", "")
+  local getBody        = getCurrentFile:gsub("<!--.*-->\n", ""):gsub("+++.*+++\n", ""):gsub("\n[^\n]*$", "")
   os.execute('gh issue edit ' .. getIssue .. ' --body ' .. '"' .. getBody .. '"')
 end
 M.maps = function()

@@ -33,14 +33,16 @@ local ghIssue = function(issue_number)
   local HEADER_ISSUE_OBJ = {}
   for key, v in pairs(GET_ISSUE_DATA_OBJ) do
     if key == 'author' then
-      HEADER_ISSUE_OBJ[key] = GET_ISSUE_DATA_OBJ[key].name
+      HEADER_ISSUE_OBJ[key] = '"' .. GET_ISSUE_DATA_OBJ[key].name .. '"'
     elseif key == 'labels' or key == 'assignees' then
       -- get name label
       local LIST = ''
       for i, val in pairs(GET_ISSUE_DATA_OBJ[key]) do
-        LIST = val.name .. ','
+        LIST = LIST .. '[' .. val.name .. ']' .. ','
       end
-      HEADER_ISSUE_OBJ[key] = LIST
+      HEADER_ISSUE_OBJ[key] = '"' .. LIST .. '"'
+    elseif key == 'title' then
+      HEADER_ISSUE_OBJ[key] = '"' .. GET_ISSUE_DATA_OBJ[key] .. '"'
     else
       HEADER_ISSUE_OBJ[key] = v
     end
