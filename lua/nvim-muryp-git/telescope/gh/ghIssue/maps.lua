@@ -2,9 +2,7 @@ local M = {}
 local getVar = function()
   local getFile        = vim.api.nvim_command_output('echo expand("%:p")')
   local getCurrentFile = vim.fn.system('cat ' .. getFile)
-  print(getCurrentFile)
   local _, _, getIssue = string.find(getCurrentFile, "https://github.com/.*/issues/(%d*)")
-  print(getIssue)
   local gitRoot        = vim.fn.system("git rev-parse --show-toplevel"):gsub('\n', '')
   return { getFile = getFile, getCurrentFile = getCurrentFile, getIssue = getIssue, gitRoot = gitRoot }
 end
