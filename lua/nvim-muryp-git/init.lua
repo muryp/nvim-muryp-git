@@ -2,6 +2,9 @@ local M = {}
 M.gh = {
   issue = function()
     require('nvim-muryp-git.telescope.gh').getListIssue()
+  end,
+  issueHistory = function()
+    require('nvim-muryp-git.telescope.gh').getListIssueHistory()
   end
 }
 M.git = {

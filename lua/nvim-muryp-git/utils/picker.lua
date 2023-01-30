@@ -7,11 +7,12 @@ return function(arg)
   local action_state = require "telescope.actions.state"
   local callback     = arg.callBack
   local opts         = arg.opts
-  local preview_arg  = arg.isPreview
+  local preview_arg  = arg.PREVIEW_OPTS
   local title        = arg.title
+  local DIR_ISSUE    = arg.DIR_ISSUE
 
   local showPreview
-  if preview_arg == true then
+  if preview_arg == 'GH_ISSUE' then
     showPreview = previewers.new_termopen_previewer {
       get_command = function(entry)
         local tmp_table = vim.split(entry.value, "\t")
@@ -22,7 +23,12 @@ return function(arg)
       end,
     }
   else
-    showPreview = false
+    showPreview = previewers.new_termopen_previewer {
+      get_command = function(entry)
+        return { "bat","--pager", "less -RS", DIR_ISSUE .. '/' .. entry.value }
+        -- return { "less","-RS",  DIR_ISSUE .. '/' .. entry.value }
+      end,
+    }
   end
   pickers.new({}, {
     prompt_title = title,

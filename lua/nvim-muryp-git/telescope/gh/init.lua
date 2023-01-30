@@ -25,13 +25,38 @@ M.getListIssue = function()
   picker({
     opts = list_issue,
     callBack = callback,
-    isPreview = true,
+    PREVIEW_OPTS = 'GH_ISSUE',
     title = 'choose your issue'
   })
 end
 
 M.getListIssueHistory = function()
-  -- use regex for open issue file and auto
+  local GET_GIT_DIR = string.gsub(vim.fn.system("git rev-parse --show-toplevel"), '\n', '')
+  local DIR_ISSUE = GET_GIT_DIR .. '/.git/muryp/'
+  local GET_DIR = vim.fn.system("ls " .. DIR_ISSUE)
+  local LIST_ISSUE = {}
+  for FILE_NAME in string.gmatch(GET_DIR, "[^\r\n]+") do
+    table.insert(LIST_ISSUE, FILE_NAME)
+  end
+  local callback = function(selection)
+    if type(selection) == 'string' then
+      local getIssueNumber = selection:gsub("\t.*", "")
+      ghIssue(getIssueNumber)
+      return
+    end
+    for _, value in pairs(selection) do
+      local getIssueNumber = value:gsub("\t.*", "")
+      ghIssue(getIssueNumber)
+    end
+  end
+
+  picker({
+    opts = LIST_ISSUE,
+    callBack = callback,
+    PREVIEW_OPTS = 'GH_LIST',
+    title = 'choose your issue history',
+    DIR_ISSUE = DIR_ISSUE
+  })
 end
 
 return M

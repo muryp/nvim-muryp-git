@@ -44,7 +44,7 @@ local ghIssue = function(issue_number)
     return 'CLOSED'
   end
   local FILE_NAME = "/gh_issue-" ..
-      '-' .. issue_number .. '-' .. string.gsub(GET_ISSUE_DATA_OBJ.title,' ','_') .. '-' .. isIssueOpen() .. ".md"
+      '-' .. issue_number .. '-' .. string.gsub(GET_ISSUE_DATA_OBJ.title, ' ', '_') .. '-' .. isIssueOpen() .. ".md"
   local FILE_PWD = DIR_LOC_HISTORY .. FILE_NAME
   local HELP_HEADER = [[
 <!--
@@ -58,9 +58,9 @@ maps :
 NOTE : puth text under comment(all comment eddit is no effect )
 -->
 ]]
-  local ISSUE_GENERATE = '<!--' .. HEADER_ISSUE_STR_DEL_SPC .. '-->' .. GET_ISSUE_DATA_OBJ.body
+  local ISSUE_GENERATE = '+++' .. HEADER_ISSUE_STR_DEL_SPC .. '+++\n'
   os.execute("mkdir " .. DIR_LOC_HISTORY)
-  os.execute('echo "' .. HELP_HEADER .. ISSUE_GENERATE .. '" > ' .. FILE_PWD)
+  os.execute('echo "' .. ISSUE_GENERATE .. HELP_HEADER .. GET_ISSUE_DATA_OBJ.body .. '" > ' .. FILE_PWD)
   vim.cmd('e ' .. FILE_PWD)
   require('nvim-muryp-git.telescope.gh.ghIssue.maps').maps()
 end
