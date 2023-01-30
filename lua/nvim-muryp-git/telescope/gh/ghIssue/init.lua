@@ -8,16 +8,16 @@ local ghIssue = function(issue_number)
     "assignees",
     "author",
     "body",
-    "closed",
+    -- "closed",
     "closedAt",
     -- "comments",
-    "createdAt",
-    "id",
+    -- "createdAt",
+    -- "id",
     "labels",
     "milestone",
     "number",
-    "projectCards",
-    "reactionGroups",
+    -- "projectCards",
+    -- "reactionGroups",
     "state",
     "title",
     "updatedAt",
@@ -31,20 +31,28 @@ local ghIssue = function(issue_number)
   local GET_ISSUE_DATA_JSON = vim.fn.system(LIST_INFO_CDM)
   local GET_ISSUE_DATA_OBJ = vim.fn.json_decode(GET_ISSUE_DATA_JSON)
   local HEADER_ISSUE_OBJ = {}
-  for i, v in pairs(GET_ISSUE_DATA_OBJ) do
-    HEADER_ISSUE_OBJ[i] = v
+  for key, v in pairs(GET_ISSUE_DATA_OBJ) do
+    if key == 'author' then
+      HEADER_ISSUE_OBJ[key] = GET_ISSUE_DATA_OBJ[key].name
+    elseif key == 'labels' or key == 'assignees' then
+      -- get name label
+      local LIST = ''
+      for i, val in pairs(GET_ISSUE_DATA_OBJ[key]) do
+        LIST = val.name .. ','
+      end
+      HEADER_ISSUE_OBJ[key] = LIST
+    else
+      HEADER_ISSUE_OBJ[key] = v
+    end
   end
   HEADER_ISSUE_OBJ.body = nil
+  -- print(vim.inspect(GET_ISSUE_DATA_OBJ))
+  -- print(vim.inspect(HEADER_ISSUE_OBJ))
   local HEADER_ISSUE_OBJ_TO_STR = require('nvim-muryp-git.utils.tableToString').serializeTable(HEADER_ISSUE_OBJ)
   local HEADER_ISSUE_STR_DEL_SPC = string.gsub(string.gsub(HEADER_ISSUE_OBJ_TO_STR, '\n ', '\n'), '^ ', '')
-  local isIssueOpen = function()
-    if GET_ISSUE_DATA_OBJ.closed == false then
-      return 'OPEN'
-    end
-    return 'CLOSED'
-  end
   local FILE_NAME = "/gh_issue-" ..
-      '-' .. issue_number .. '-' .. string.gsub(GET_ISSUE_DATA_OBJ.title, ' ', '_') .. '-' .. isIssueOpen() .. ".md"
+      '-' ..
+      issue_number .. '-' .. string.gsub(GET_ISSUE_DATA_OBJ.title, ' ', '_') .. '-' .. GET_ISSUE_DATA_OBJ.state .. ".md"
   local FILE_PWD = DIR_LOC_HISTORY .. FILE_NAME
   local HELP_HEADER = [[
 <!--
