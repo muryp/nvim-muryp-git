@@ -37,7 +37,7 @@ local ghIssue = function(issue_number)
     elseif key == 'labels' or key == 'assignees' then
       -- get name label
       local LIST = ''
-      for i, val in pairs(GET_ISSUE_DATA_OBJ[key]) do
+      for _, val in pairs(GET_ISSUE_DATA_OBJ[key]) do
         LIST = LIST .. '[' .. val.name .. ']' .. ','
       end
       HEADER_ISSUE_OBJ[key] = '"' .. LIST .. '"'
@@ -48,8 +48,6 @@ local ghIssue = function(issue_number)
     end
   end
   HEADER_ISSUE_OBJ.body = nil
-  -- print(vim.inspect(GET_ISSUE_DATA_OBJ))
-  -- print(vim.inspect(HEADER_ISSUE_OBJ))
   local HEADER_ISSUE_OBJ_TO_STR = require('nvim-muryp-git.utils.tableToString').serializeTable(HEADER_ISSUE_OBJ)
   local HEADER_ISSUE_STR_DEL_SPC = string.gsub(string.gsub(HEADER_ISSUE_OBJ_TO_STR, '\n ', '\n'), '^ ', '')
   local FILE_NAME = "/gh_issue-" ..
