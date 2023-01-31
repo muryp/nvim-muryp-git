@@ -39,16 +39,15 @@ M.getListIssueHistory = function()
     table.insert(LIST_ISSUE, FILE_NAME)
   end
   local callback = function(selection)
-    local GET_GIT_DIR = string.gsub(vim.fn.system("git rev-parse --show-toplevel"), '\n', '')
-    local DIR_ISSUE = GET_GIT_DIR .. '/.git/muryp/'
+    local defindMaps = require('nvim-muryp-git.telescope.gh.ghIssue.maps').maps
     if type(selection) == 'string' then
       vim.cmd('e ' .. DIR_ISSUE .. selection)
-      require('nvim-muryp-git.telescope.gh.ghIssue.maps').maps()
+      defindMaps()
       return
     end
     for _, value in pairs(selection) do
       vim.cmd('e ' .. DIR_ISSUE .. value)
-      require('nvim-muryp-git.telescope.gh.ghIssue.maps').maps()
+      defindMaps()
     end
   end
 
