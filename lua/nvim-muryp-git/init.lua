@@ -11,7 +11,7 @@ M.setup = {
       require('nvim-muryp-git.git').maps()
     end,
   },
-  SSH_PATH = { '~/ssh/' }
+  SSH_PATH = { '~/ssh/github' }
 }
 
 ---add picker telescope
