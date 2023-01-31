@@ -4,7 +4,7 @@ M.gitCommit = function()
   vim.cmd('term ' .. "cd %:p:h" .. gitCommitCmd)
 end
 M.addSsh = function()
-  local SshPath = require('nvim-muryp-git').setup.SSH_PATH
+  local SshPath = require('nvim-muryp-git').Setup.SSH_PATH
   local SSH_PATH = ''
   for _, PATH in pairs(SshPath) do
     SSH_PATH = SSH_PATH .. ' ' .. PATH
@@ -28,7 +28,7 @@ M.maps = function()
       f = { ':Telescope git_flow<CR>', "FLOW" },
       e = { ':Telescope git_issue<CR>', "EDIT_ISSUE" },
       h = { ':Telescope git_issue_history<CR>', "EDIT_ISSUE_HISTORY" },
-      i = { ':Telescope git_issue<CR>', "EDIT_ISSUE_HISTORY" },
+      i = { ':Telescope git_issue<CR>', "EDIT_ISSUE" },
       s = { ':Telescope git_issue<CR>', "STATUS" },
       c = { ':!term git commit<CR>', "COMMIT" },
       a = { ':term gh issue create<CR>', "ADD_ISSUE" },

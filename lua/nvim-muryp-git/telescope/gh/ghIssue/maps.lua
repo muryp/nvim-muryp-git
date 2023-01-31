@@ -35,7 +35,7 @@ M.delete = function()
 end
 M.maps = function()
   local wk          = require("which-key")
-  local IMPORT_THIS = ":lua require('nvim-muryp-git.telescope.gh.ghIssue.maps')"
+  local IMPORT_THIS = ":lua require('nvim-muryp-git').Setup.mapping.issue()"
   wk.register({
     ["<leader>"] = {
       name = "ISSUE_CMD",

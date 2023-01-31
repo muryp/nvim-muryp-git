@@ -44,7 +44,7 @@ M.getListIssueHistory = function()
   ---@param UserSelect string|string[]
   ---@return nil
   local callback = function(UserSelect)
-    local defindMaps = require('nvim-muryp-git.telescope.gh.ghIssue.maps').maps
+    local defindMaps = require('nvim-muryp-git').Setup.mapping.issue
     if type(UserSelect) == 'string' then
       vim.cmd('e ' .. DIR_ISSUE .. UserSelect)
       defindMaps()

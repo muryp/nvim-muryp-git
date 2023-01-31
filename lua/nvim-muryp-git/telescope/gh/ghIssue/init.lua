@@ -19,6 +19,6 @@ local ghIssue = function(ISSUE_NUMBER)
   os.execute("mkdir " .. DIR_LOC_HISTORY)
   os.execute('echo "' .. ISSUE_GENERATE .. HELP_HEADER .. GetIssueData.body .. '" > ' .. FILE_PWD)
   vim.cmd('e ' .. FILE_PWD)
-  require('nvim-muryp-git.telescope.gh.ghIssue.maps').maps()
+  require('nvim-muryp-git').setup.mapping()
 end
 return ghIssue
