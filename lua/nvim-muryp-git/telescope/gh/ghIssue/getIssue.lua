@@ -1,4 +1,4 @@
----@param Arg {ISSUE_NUMBER:string} : get issue number
+---@param Arg {ISSUE_NUMBER:number} : get issue number
 ---@return { title:string, body:string, state:string } : object all info about issue
 return function(Arg)
   local LIST_INFO = {
@@ -27,6 +27,6 @@ return function(Arg)
   end
   local LIST_INFO_CDM = "gh issue view " .. table.concat(LIST_INFO_JSON, ' ') .. ' ' .. Arg.ISSUE_NUMBER
   local GET_ISSUE_DATA_JSON = vim.fn.system(LIST_INFO_CDM)
-  local GET_ISSUE_DATA_OBJ = vim.fn.json_decode(GET_ISSUE_DATA_JSON)
-  return GET_ISSUE_DATA_OBJ
+  local IssueData = vim.fn.json_decode(GET_ISSUE_DATA_JSON)
+  return IssueData
 end

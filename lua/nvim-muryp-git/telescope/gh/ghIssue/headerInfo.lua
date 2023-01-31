@@ -1,24 +1,23 @@
-return function(arg)
-  local GET_ISSUE_DATA_OBJ = arg.GET_ISSUE_DATA_OBJ
-  local HEADER_ISSUE_OBJ = {}
-  for key, v in pairs(GET_ISSUE_DATA_OBJ) do
-    if key == 'author' then
-      HEADER_ISSUE_OBJ[key] = '"' .. GET_ISSUE_DATA_OBJ[key].name .. '"'
-    elseif key == 'labels' or key == 'assignees' then
-      -- get name label
-      local LIST = ''
-      for _, val in pairs(GET_ISSUE_DATA_OBJ[key]) do
-        LIST = LIST .. '[' .. val.name .. ']' .. ','
+return function(Arg)
+  local GetIssueData = Arg.GetIssueData ---@type Object
+  local HeaderIssue = {}
+  for KEY, VAL in pairs(GetIssueData) do
+    if KEY == 'author' then
+      HeaderIssue[KEY] = '"' .. GetIssueData[KEY].name .. '"'
+    elseif KEY == 'labels' or KEY == 'assignees' then
+      local LIST = '' --- get name label
+      for _, Val in pairs(GetIssueData[KEY]) do
+        LIST = LIST .. '[' .. Val.name .. ']' .. ','
       end
-      HEADER_ISSUE_OBJ[key] = '"' .. LIST .. '"'
-    elseif key == 'title' then
-      HEADER_ISSUE_OBJ[key] = '"' .. GET_ISSUE_DATA_OBJ[key] .. '"'
+      HeaderIssue[KEY] = '"' .. LIST .. '"'
+    elseif KEY == 'title' then
+      HeaderIssue[KEY] = '"' .. GetIssueData[KEY] .. '"'
     else
-      HEADER_ISSUE_OBJ[key] = v
+      HeaderIssue[KEY] = VAL
     end
   end
-  HEADER_ISSUE_OBJ.body = nil
-  local HEADER_ISSUE_OBJ_TO_STR = require('nvim-muryp-git.utils.tableToString').serializeTable(HEADER_ISSUE_OBJ)
-  local HEADER_ISSUE_STR_DEL_SPC = string.gsub(string.gsub(HEADER_ISSUE_OBJ_TO_STR, '\n ', '\n'), '^ ', '')
-  return HEADER_ISSUE_STR_DEL_SPC
+  HeaderIssue.body = nil
+  local HEADER_ISSUE = require('nvim-muryp-git.utils.tableToString').serializeTable(HeaderIssue)
+  local HEADER_ISSUE_DEL_SPC = string.gsub(string.gsub(HEADER_ISSUE, '\n ', '\n'), '^ ', '')
+  return HEADER_ISSUE_DEL_SPC
 end
