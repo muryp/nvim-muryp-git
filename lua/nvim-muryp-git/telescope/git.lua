@@ -1,5 +1,5 @@
 local M = {}
-M.gitCommitCmd = " && cd $(git rev-parse --show-toplevel) && git add . && git commit"
+local gitCommitCmd = " && cd $(git rev-parse --show-toplevel) && git add . && git commit"
 M.gitCommit = function()
   vim.cmd('term ' .. "cd %:p:h" .. gitCommitCmd)
 end
