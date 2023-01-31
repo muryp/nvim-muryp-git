@@ -15,8 +15,12 @@ local Setup = {
 
 ---@param arg {mapping:{git:function,issue:function},SSH_PATH:string[]}
 M.setup = function(arg)
-  local gitMap = arg.mapping.git
-  local issueMap = arg.mapping.issue
+  local gitMap   = nil
+  local issueMap = nil
+  if arg.mapping ~= nil then
+    gitMap   = arg.mapping.git
+    issueMap = arg.mapping.issue
+  end
   local SSH_PATH = arg.SSH_PATH
   if gitMap ~= nil then
     Setup.mapping.git = gitMap
@@ -34,10 +38,10 @@ M.Setup = Setup
 
 M.resgisterTelescope = function()
   ---add picker telescope
-  local plug             = require('telescope.builtin')
-  local gitFlow          = require('configs.file.telescope.extensi.gitFlow')
-  local ghIssue          = require('nvim-muryp-git.telescope.gh').getListIssue
-  local ghHistory        = require('nvim-muryp-git.telescope.gh').getListIssueHistory
+  local plug      = require('telescope.builtin')
+  local gitFlow   = require('configs.file.telescope.extensi.gitFlow')
+  local ghIssue   = require('nvim-muryp-git.telescope.gh').getListIssue
+  local ghHistory = require('nvim-muryp-git.telescope.gh').getListIssueHistory
 
   plug.git_flow          = gitFlow
   plug.git_issue         = ghIssue
