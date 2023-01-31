@@ -10,7 +10,7 @@ local Setup = {
       require('nvim-muryp-git.git').maps()
     end,
   },
-  SSH_PATH = { '~/ssh/github' }
+  SSH_PATH = { '~/.ssh/github' }
 }
 
 ---@param arg {mapping:{git:function,issue:function},SSH_PATH:string[]}

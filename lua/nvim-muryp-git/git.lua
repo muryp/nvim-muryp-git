@@ -7,7 +7,7 @@ M.addSsh = function()
   local SshPath = require('nvim-muryp-git').Setup.SSH_PATH
   local SSH_PATH = ''
   for _, PATH in pairs(SshPath) do
-    SSH_PATH = SSH_PATH .. ' ' .. PATH
+    SSH_PATH = SSH_PATH .. PATH .. ' '
   end
   vim.cmd("!cd %:h && eval \"$(ssh-agent -s)\" && ssh-add " .. SSH_PATH)
 end
