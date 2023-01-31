@@ -26,10 +26,9 @@ M.maps = function()
       name = "GIT",
       b = { ':Telescope git_branches<CR>', "BRANCH" },
       f = { ':Telescope git_flow<CR>', "FLOW" },
-      e = { ':Telescope git_issue<CR>', "EDIT_ISSUE" },
       h = { ':Telescope git_issue_history<CR>', "EDIT_ISSUE_HISTORY" },
       i = { ':Telescope git_issue<CR>', "EDIT_ISSUE" },
-      s = { ':Telescope git_issue<CR>', "STATUS" },
+      s = { ':Telescope git_status<CR>', "STATUS" },
       c = { ':!term git commit<CR>', "COMMIT" },
       a = { ':term gh issue create<CR>', "ADD_ISSUE" },
       v = { M.gitCommit, "ADD+COMMIT" },
@@ -37,7 +36,7 @@ M.maps = function()
         M.addSsh()
         M.gitPush()
       end, "SSH+PUSH" },
-      x = { ':term git push --all<CR>', "PUSH" },
+      e = { ':term git push --all<CR>', "PUSH" },
       P = { M.pull, "PULL" },
     },
   }, { prefix = "<leader>" })
