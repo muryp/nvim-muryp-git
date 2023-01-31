@@ -10,6 +10,7 @@
 - telescope : for list option
 ## install
 - packer
+
 ```lua
 use {
   'muryp/nvim-muryp-git',

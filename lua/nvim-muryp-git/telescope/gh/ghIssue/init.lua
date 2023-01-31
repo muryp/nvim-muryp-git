@@ -13,12 +13,12 @@ local ghIssue = function(ISSUE_NUMBER)
   local FILE_NAME = "/gh_issue-" ..
       '-' ..
       ISSUE_NUMBER .. '-' .. string.gsub(GetIssueData.title, ' ', '_') .. '-' .. GetIssueData.state .. ".md"
-  local FILE_PWD = DIR_LOC_HISTORY .. FILE_NAME
-  local ISSUE_GENERATE = '+++' .. HEADER_ISSUE_STR .. '+++\n'
+  local FILE_RESULT = DIR_LOC_HISTORY .. FILE_NAME
+  local ISSUE_HEADER = '+++' .. HEADER_ISSUE_STR .. '+++\n'
   local HELP_HEADER = require('nvim-muryp-git.telescope.gh.ghIssue.helper')
   os.execute("mkdir " .. DIR_LOC_HISTORY)
-  os.execute('echo "' .. ISSUE_GENERATE .. HELP_HEADER .. GetIssueData.body .. '" > ' .. FILE_PWD)
-  vim.cmd('e ' .. FILE_PWD)
-  require('nvim-muryp-git').setup.mapping()
+  os.execute('echo "' .. ISSUE_HEADER .. HELP_HEADER .. GetIssueData.body .. '" > ' .. FILE_RESULT)
+  vim.cmd('e ' .. FILE_RESULT)
+  require('nvim-muryp-git').Setup.mapping.issue()
 end
 return ghIssue

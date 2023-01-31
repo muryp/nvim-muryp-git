@@ -35,9 +35,9 @@ end
 ---issue list offline
 M.getListIssueHistory = function()
   local GET_GIT_DIR = string.gsub(vim.fn.system("git rev-parse --show-toplevel"), '\n', '')
-  local DIR_ISSUE = GET_GIT_DIR .. '/.git/muryp/'
-  local GET_DIR = vim.fn.system("ls " .. DIR_ISSUE)
-  local ListIssue = {}
+  local DIR_ISSUE   = GET_GIT_DIR .. '/.git/muryp/'
+  local GET_DIR     = vim.fn.system("ls " .. DIR_ISSUE)
+  local ListIssue   = {}
   for FILE_NAME in string.gmatch(GET_DIR, "[^\r\n]+") do
     table.insert(ListIssue, FILE_NAME)
   end

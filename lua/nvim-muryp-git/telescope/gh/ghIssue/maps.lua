@@ -9,17 +9,17 @@ local getVar = function()
 end
 M.edit = function()
   local arg = getVar()
-  vim.cmd('!' .. _G.TMUX_POPUP .. ' "cd ' .. arg.gitRoot .. ' && gh issue edit ' .. arg.getIssue .. '"')
+  vim.cmd('term cd ' .. arg.gitRoot .. ' && gh issue edit ' .. arg.getIssue)
 end
 M.open = function()
   vim.cmd('!gh issue view -w ' .. getVar().getIssue)
 end
 M.push = function()
-  local variable     = getVar()
-  local CURRENT_FILE = variable.getCurrentFile
-  local ISSUE_NUMBER = variable.getIssue
+  local VAR     = getVar()
+  local CURRENT_FILE = VAR.getCurrentFile
+  local ISSUE_NUMBER = VAR.getIssue
   local BODY_ISSUE   = CURRENT_FILE:gsub("<!--.*-->\n", ""):gsub("+++.*+++\n", ""):gsub("\n[^\n]*$", "")
-  local OUTPUT = vim.fn.system('gh issue edit ' .. ISSUE_NUMBER .. ' --body ' .. '"' .. BODY_ISSUE .. '"')
+  local OUTPUT       = vim.fn.system('gh issue edit ' .. ISSUE_NUMBER .. ' --body ' .. '"' .. BODY_ISSUE .. '"')
   print(OUTPUT)
 end
 M.update = function()
@@ -35,7 +35,7 @@ M.delete = function()
 end
 M.maps = function()
   local wk          = require("which-key")
-  local IMPORT_THIS = ":lua require('nvim-muryp-git').Setup.mapping.issue()"
+  local IMPORT_THIS = ":lua require('nvim-muryp-git.telescope.gh.ghIssue.maps')"
   wk.register({
     ["<leader>"] = {
       name = "ISSUE_CMD",
