@@ -20,18 +20,27 @@ M.pull = function()
 end
 
 M.maps = function()
-  local key = vim.keymap.set
-  key('n', '<leader>gs', ':Telescope git_status<CR>')
-  key('n', '<leader>gc', ':Telescope git_branches<CR>')
-  key('n', '<leader>gf', ':Telescope git_flow<CR>')
-  key('n', '<leader>gi', ':Telescope git_issue<CR>')
-  key('n', '<leader>gi', ':Telescope git_issue_history<CR>')
-  key('n', '<leader>ga', ':term gh issue create<CR>')
-  key('n', '<leader>gv', M.gitCommit)
-  key('n', '<leader>gp', function()
-    M.addSsh()
-    M.gitPush()
-  end)
+  local wk = require("which-key")
+  wk.register({
+    g = {
+      name = "GIT",
+      b = { ':Telescope git_branches<CR>', "BRANCH" },
+      f = { ':Telescope git_flow<CR>', "FLOW" },
+      e = { ':Telescope git_issue<CR>', "EDIT_ISSUE" },
+      h = { ':Telescope git_issue_history<CR>', "EDIT_ISSUE_HISTORY" },
+      i = { ':Telescope git_issue<CR>', "EDIT_ISSUE_HISTORY" },
+      s = { ':Telescope git_issue<CR>', "STATUS" },
+      c = { ':!term git commit<CR>', "COMMIT" },
+      a = { ':term gh issue create<CR>', "ADD_ISSUE" },
+      v = { M.gitCommit, "ADD+COMMIT" },
+      p = { function()
+        M.addSsh()
+        M.gitPush()
+      end, "SSH+PUSH" },
+      x = { ':term git push --all<CR>', "PUSH" },
+      P = { M.pull, "PULL" },
+    },
+  }, { prefix = "<leader>" })
 end
 
 return M

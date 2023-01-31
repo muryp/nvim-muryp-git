@@ -33,14 +33,16 @@ M.delete = function()
   vim.cmd('bd')
 end
 M.maps = function()
-  local key         = vim.keymap.set ---@type Map
-  local OPTION_MAPS = { buffer = true }
-  local LEADER_MAPS = "<leader><leader>"
+  local wk          = require("which-key")
   local IMPORT_THIS = ":lua require('nvim-muryp-git.telescope.gh.ghIssue.maps')"
-  key("n", LEADER_MAPS .. "p", IMPORT_THIS .. ".push()<CR>", OPTION_MAPS)
-  key("n", LEADER_MAPS .. "e", IMPORT_THIS .. ".edit()<CR>", OPTION_MAPS)
-  key("n", LEADER_MAPS .. "o", IMPORT_THIS .. ".open()<CR>", OPTION_MAPS)
-  key("n", LEADER_MAPS .. "u", IMPORT_THIS .. ".update()<CR>", OPTION_MAPS)
-  key("n", LEADER_MAPS .. "d", IMPORT_THIS .. ".delete()<CR>", OPTION_MAPS)
+  wk.register({
+    ["<leader>"] = {
+      name = "ISSUE_CMD",
+      p = { IMPORT_THIS .. ".push()<CR>", "UPDATE_GH", buffer = 1 },
+      e = { IMPORT_THIS .. ".edit()<CR>", "EDIT", buffer = 1 },
+      o = { IMPORT_THIS .. ".update()<CR>", "UPDATE_LOCAL", buffer = 1 },
+      d = { IMPORT_THIS .. ".delete()<CR>", "DELETE", buffer = 1 },
+    },
+  }, { prefix = "<leader>" })
 end
 return M
