@@ -1,14 +1,14 @@
 local picker = require "nvim-muryp-git.utils.picker"
 
 return function()
-  local list_branch_obj = {}
-  local list_branch = vim.api.nvim_command_output('echo system("git branch")')
-  local name_branch_now = vim.api.nvim_command_output('echo system("echo $(git symbolic-ref --short HEAD)")')
-  local name_branch_now_convert = string.gsub(name_branch_now, "\n", "")
-
-  for word in string.gmatch(list_branch, "%S+") do
-    if word ~= "*" and word ~= name_branch_now_convert then
-      table.insert(list_branch_obj, word)
+  local ListBranch = {} ---@type string[]
+  local LIST_BRANCH = vim.api.nvim_command_output('echo system("git branch")') ---@type string
+  local NAME_CURRENT_BRANCH = vim.api.nvim_command_output('echo system("echo $(git symbolic-ref --short HEAD)")') ---@type string
+  local BRANCH_DEL_ENTER = string.gsub(NAME_CURRENT_BRANCH, "\n", "")
+  ---check is not current branch and *
+  for BRANCH in string.gmatch(LIST_BRANCH, "%S+") do
+    if BRANCH ~= "*" and BRANCH ~= BRANCH_DEL_ENTER then
+      table.insert(ListBranch, BRANCH)
     end
   end
 
@@ -17,7 +17,7 @@ return function()
   end
 
   picker({
-    opts = list_branch_obj,
+    opts = ListBranch,
     callBack = callback,
     title = "choose branch want to merge"
   })
