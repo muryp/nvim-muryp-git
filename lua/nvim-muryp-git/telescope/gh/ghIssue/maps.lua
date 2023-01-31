@@ -19,7 +19,8 @@ M.push = function()
   local CURRENT_FILE = variable.getCurrentFile
   local ISSUE_NUMBER = variable.getIssue
   local BODY_ISSUE   = CURRENT_FILE:gsub("<!--.*-->\n", ""):gsub("+++.*+++\n", ""):gsub("\n[^\n]*$", "")
-  os.execute('gh issue edit ' .. ISSUE_NUMBER .. ' --body ' .. '"' .. BODY_ISSUE .. '"')
+  local OUTPUT = vim.fn.system('gh issue edit ' .. ISSUE_NUMBER .. ' --body ' .. '"' .. BODY_ISSUE .. '"')
+  print(OUTPUT)
 end
 M.update = function()
   local ghIssue      = require('nvim-muryp-git.telescope.gh.ghIssue')
@@ -40,7 +41,7 @@ M.maps = function()
       name = "ISSUE_CMD",
       p = { IMPORT_THIS .. ".push()<CR>", "UPDATE_GH", buffer = 1 },
       e = { IMPORT_THIS .. ".edit()<CR>", "EDIT", buffer = 1 },
-      o = { IMPORT_THIS .. ".update()<CR>", "UPDATE_LOCAL", buffer = 1 },
+      u = { IMPORT_THIS .. ".update()<CR>", "UPDATE_LOCAL", buffer = 1 },
       d = { IMPORT_THIS .. ".delete()<CR>", "DELETE", buffer = 1 },
     },
   }, { prefix = "<leader>" })
