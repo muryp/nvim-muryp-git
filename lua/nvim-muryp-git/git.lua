@@ -9,10 +9,15 @@ M.addSsh = function()
   for _, PATH in pairs(SshPath) do
     SSH_PATH = SSH_PATH .. PATH .. ' '
   end
-  vim.cmd("!cd %:h && eval \"$(ssh-agent -s)\" && ssh-add " .. SSH_PATH)
+  local PATH_NOW = vim.fn.expand('%:h')
+  local CMD = 'cd ' .. PATH_NOW .. [[ && eval "$(ssh-agent -s)" && ssh-add ]] .. SSH_PATH
+  return CMD
 end
 M.gitPush = function()
   vim.cmd("!git push --all")
+end
+M.gitSshPush = function()
+  vim.cmd('!' .. M.addSsh() .. " && git push --all")
 end
 
 M.pull = function()
@@ -33,8 +38,7 @@ M.maps = function()
       a = { ':term gh issue create<CR>', "ADD_ISSUE" },
       v = { M.gitCommit, "ADD+COMMIT" },
       p = { function()
-        M.addSsh()
-        M.gitPush()
+        M.gitSshPush()
       end, "SSH+PUSH" },
       e = { ':term git push --all<CR>', "PUSH" },
       P = { M.pull, "PULL" },
