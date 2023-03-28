@@ -39,10 +39,10 @@ M.maps = function()
   wk.register({
     ["<leader>"] = {
       name = "ISSUE_CMD",
-      p = { IMPORT_THIS .. ".push()<CR>", "UPDATE_GH", buffer = 1 },
-      e = { IMPORT_THIS .. ".edit()<CR>", "EDIT", buffer = 1 },
-      u = { IMPORT_THIS .. ".update()<CR>", "UPDATE_LOCAL", buffer = 1 },
-      d = { IMPORT_THIS .. ".delete()<CR>", "DELETE", buffer = 1 },
+      p = { IMPORT_THIS .. ".push()<CR>", "UPDATE_GH", buffer = 0 },
+      e = { IMPORT_THIS .. ".edit()<CR>", "EDIT", buffer = 0 },
+      u = { IMPORT_THIS .. ".update()<CR>", "UPDATE_LOCAL", buffer = 0 },
+      d = { IMPORT_THIS .. ".delete()<CR>", "DELETE", buffer = 0 },
     },
   }, { prefix = "<leader>" })
 end

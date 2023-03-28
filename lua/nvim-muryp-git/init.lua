@@ -15,23 +15,18 @@ local Setup = {
 
 ---@param arg {mapping:{git:function,issue:function},SSH_PATH:string[]}
 M.setup = function(arg)
-  local gitMap   = nil
-  local issueMap = nil
   if arg.mapping ~= nil then
-    gitMap   = arg.mapping.git
-    issueMap = arg.mapping.issue
+    if arg.mapping.git ~= nil then
+      Setup.mapping.git = arg.mapping.git
+    end
+    if arg.mapping.issue ~= nil then
+      Setup.mapping.issue = arg.mapping.issue
+    end
   end
-  local SSH_PATH = arg.SSH_PATH
-  if gitMap ~= nil then
-    Setup.mapping.git = gitMap
+  if arg.SSH_PATH ~= nil then
+    Setup.SSH_PATH = arg.SSH_PATH
   end
-  if gitMap ~= nil then
-    Setup.mapping.issue = issueMap
-  end
-  if gitMap ~= nil then
-    Setup.SSH_PATH = SSH_PATH
-  end
-  M.Setup.mapping.git()
+  Setup.mapping.git()
 end
 
 M.Setup = Setup

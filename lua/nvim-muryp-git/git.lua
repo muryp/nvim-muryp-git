@@ -9,41 +9,48 @@ M.addSsh = function()
   for _, PATH in pairs(SshPath) do
     SSH_PATH = SSH_PATH .. PATH .. ' '
   end
-  local PATH_NOW = vim.fn.expand('%:h')
-  local CMD = 'cd ' .. PATH_NOW .. [[ && eval "$(ssh-agent -s)" && ssh-add ]] .. SSH_PATH
+  local CMD = [[eval "$(ssh-agent -s)" && ssh-add ]] .. SSH_PATH
   return CMD
 end
 M.gitPush = function()
-  vim.cmd("!git push --all")
+  ---@type string
+  local PATH_NOW = vim.fn.expand('%:h')
+  local result = ''
+  if PATH_NOW ~= '' then
+    ---@type string
+    result = 'cd ' .. PATH_NOW
+  end
+  ---@type string
+  result = result .. " && git push --all"
+  return result
 end
 M.gitSshPush = function()
-  vim.cmd('!' .. M.addSsh() .. " && git push --all")
+  vim.cmd('term ' .. M.addSsh() .. M.gitPush())
 end
 
 M.pull = function()
-  vim.cmd('git pull')
+  vim.cmd('term git pull')
 end
 
 M.maps = function()
   local wk = require("which-key")
-  wk.register({
-    g = {
-      name = "GIT",
-      b = { ':Telescope git_branches<CR>', "BRANCH" },
-      f = { ':Telescope git_flow<CR>', "FLOW" },
-      h = { ':Telescope git_issue_history<CR>', "EDIT_ISSUE_HISTORY" },
-      i = { ':Telescope git_issue<CR>', "EDIT_ISSUE" },
-      s = { ':Telescope git_status<CR>', "STATUS" },
-      c = { ':!term git commit<CR>', "COMMIT" },
-      a = { ':term gh issue create<CR>', "ADD_ISSUE" },
-      v = { M.gitCommit, "ADD+COMMIT" },
-      p = { function()
-        M.gitSshPush()
-      end, "SSH+PUSH" },
-      e = { ':term git push --all<CR>', "PUSH" },
-      P = { M.pull, "PULL" },
-    },
-  }, { prefix = "<leader>" })
+  local MAPS = {
+    name = "GIT",
+    b = { ':Telescope git_branches<CR>', "BRANCH" },
+    f = { ':Telescope git_flow<CR>', "FLOW" },
+    h = { ':Telescope git_issue_history<CR>', "EDIT_ISSUE_HISTORY" },
+    i = { ':Telescope git_issue<CR>', "EDIT_ISSUE" },
+    s = { ':Telescope git_status<CR>', "STATUS" },
+    c = { ':term git commit<CR>', "COMMIT" },
+    a = { ':term gh issue create<CR>', "ADD_ISSUE" },
+    v = { M.gitCommit, "ADD+COMMIT" },
+    p = { function()
+      M.gitSshPush()
+    end, "SSH+PUSH" },
+    e = { ':term git push --all<CR>', "PUSH" },
+    P = { M.pull, "PULL" },
+  }
+  wk.register({ g = MAPS }, { prefix = "<leader>" })
 end
 
 return M
