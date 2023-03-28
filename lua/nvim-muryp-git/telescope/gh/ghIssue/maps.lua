@@ -15,7 +15,7 @@ M.open = function()
   vim.cmd('!gh issue view -w ' .. getVar().getIssue)
 end
 M.push = function()
-  local VAR     = getVar()
+  local VAR          = getVar()
   local CURRENT_FILE = VAR.getCurrentFile
   local ISSUE_NUMBER = VAR.getIssue
   local BODY_ISSUE   = CURRENT_FILE:gsub("<!--.*-->\n", ""):gsub("+++.*+++\n", ""):gsub("\n[^\n]*$", "")
@@ -34,9 +34,9 @@ M.delete = function()
   vim.cmd('bd')
 end
 M.maps = function()
-  local wk          = require("which-key")
+  local mapping = require('nvim-muryp-git.utils.mapping')
   local IMPORT_THIS = ":lua require('nvim-muryp-git.telescope.gh.ghIssue.maps')"
-  wk.register({
+  mapping({
     ["<leader>"] = {
       name = "ISSUE_CMD",
       p = { IMPORT_THIS .. ".push()<CR>", "UPDATE_GH", buffer = 0 },

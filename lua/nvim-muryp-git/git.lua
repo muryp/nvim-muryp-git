@@ -1,3 +1,5 @@
+local mapping = require('nvim-muryp-git.utils.mapping')
+
 local M = {}
 local gitCommitCmd = " && cd $(git rev-parse --show-toplevel) && git add . && git commit"
 M.gitCommit = function()
@@ -33,7 +35,6 @@ M.pull = function()
 end
 
 M.maps = function()
-  local wk = require("which-key")
   local MAPS = {
     name = "GIT",
     b = { ':Telescope git_branches<CR>', "BRANCH" },
@@ -50,7 +51,7 @@ M.maps = function()
     e = { ':term git push --all<CR>', "PUSH" },
     P = { M.pull, "PULL" },
   }
-  wk.register({ g = MAPS }, { prefix = "<leader>" })
+  mapping({ g = MAPS }, { prefix = "<leader>", noremap = true })
 end
 
 return M
