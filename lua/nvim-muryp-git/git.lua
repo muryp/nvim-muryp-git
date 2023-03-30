@@ -20,7 +20,7 @@ M.gitPush = function()
   local result = ''
   if PATH_NOW ~= '' then
     ---@type string
-    result = 'cd ' .. PATH_NOW
+    result = ' && cd ' .. PATH_NOW
   end
   ---@type string
   result = result .. " && git push --all"
