@@ -18,8 +18,8 @@ M.push = function()
   local VAR          = getVar()
   local CURRENT_FILE = VAR.getCurrentFile
   local ISSUE_NUMBER = VAR.getIssue
-  local BODY_ISSUE   = CURRENT_FILE:gsub("<!--.*-->\n", ""):gsub("+++.*+++\n", ""):gsub("\n[^\n]*$", "")
-  vim.cmd('gh issue edit ' .. ISSUE_NUMBER .. ' --body ' .. '"' .. BODY_ISSUE .. '"')
+  local BODY_ISSUE   = CURRENT_FILE:gsub("<!--.*-->\n", ""):gsub("+++.*+++\n", ""):gsub("\n[^\n]*$", ""):gsub('"','\\"'):gsub('\n','\\\\n')
+  vim.cmd('term gh issue edit ' .. ISSUE_NUMBER .. ' --body ' .. '"$(echo "' .. BODY_ISSUE .. '")"')
 end
 M.update = function()
   local ghIssue      = require('nvim-muryp-git.telescope.gh.ghIssue')
@@ -37,7 +37,7 @@ M.maps = function()
   mapping({
     g = {
       name = "ISSUE_CMD",
-      p = { IMPORT_THIS .. ".push()<CR>", "UPDATE_GH" },
+      p = { IMPORT_THIS .. ".push()<CR>", "PUSH_INTO_GH" },
       e = { IMPORT_THIS .. ".edit()<CR>", "EDIT" },
       u = { IMPORT_THIS .. ".update()<CR>", "UPDATE_LOCAL" },
       d = { IMPORT_THIS .. ".delete()<CR>", "DELETE" },
