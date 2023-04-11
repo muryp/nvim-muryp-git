@@ -1,6 +1,6 @@
 -- gh issue list
 local picker          = require "nvim-muryp-git.utils.picker"
-local ghIssue         = require('nvim-muryp-git.telescope.gh.ghIssue')
+local ghIssue         = require('nvim-muryp-git.telescope.gh.ghIssue').ghIssue
 local M               = {}
 
 ---issue list get from online

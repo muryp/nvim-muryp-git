@@ -26,8 +26,9 @@ return function(Arg)
     timer:start(1000, 0,
       vim.schedule_wrap(function()
         if CONTENT_RESULT[index] == nil then
+          local ghIssue = require('nvim-muryp-git.telescope.gh.ghIssue').getContent(index)[1]
           ---chaching fetch from gh issue
-          CONTENT_RESULT[index] = vim.split(vim.fn.system('gh issue view ' .. index), "\n")
+          CONTENT_RESULT[index] = vim.split(ghIssue, "\n")
         end
         vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, CONTENT_RESULT[index])
       end))
@@ -63,7 +64,7 @@ return function(Arg)
         local filename = DIR_ISSUE .. '/' .. entry.value
         local content = {}
         for line in io.lines(filename) do
-          table.insert(content,line)
+          table.insert(content, line)
         end
         -- add loading text if content will not generate now
         vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, content)

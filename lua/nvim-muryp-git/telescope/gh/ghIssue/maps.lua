@@ -22,7 +22,7 @@ M.push = function()
   vim.cmd('term gh issue edit ' .. ISSUE_NUMBER .. ' --body ' .. '"$(echo "' .. BODY_ISSUE .. '")"')
 end
 M.update = function()
-  local ghIssue      = require('nvim-muryp-git.telescope.gh.ghIssue')
+  local ghIssue      = require('nvim-muryp-git.telescope.gh.ghIssue').ghIssue
   local ISSUE_NUMBER = getVar().getIssue ---@type number
   ghIssue(ISSUE_NUMBER)
 end
