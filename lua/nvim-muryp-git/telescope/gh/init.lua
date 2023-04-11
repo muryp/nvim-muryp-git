@@ -36,11 +36,32 @@ end
 M.getListIssueHistory = function()
   local GET_GIT_DIR = string.gsub(vim.fn.system("git rev-parse --show-toplevel"), '\n', '')
   local DIR_ISSUE   = GET_GIT_DIR .. '/.git/muryp/'
-  require('telescope.builtin').find_files({
-    prompt_title = 'Find History Issue', -- Judul pada prompt
-    title        = 'My List History Issue',       -- Judul pada pratinjau
-    cwd          = DIR_ISSUE,
-    -- Konfigurasi atau opsi lainnya
+  local GET_DIR     = vim.fn.system("ls " .. DIR_ISSUE)
+  local ListIssue   = {}
+  for FILE_NAME in string.gmatch(GET_DIR, "[^\r\n]+") do
+    table.insert(ListIssue, FILE_NAME)
+  end
+  ---@param UserSelect string|string[]
+  ---@return nil
+  local callback = function(UserSelect)
+    local defindMaps = require('nvim-muryp-git').Setup.mapping.issue
+    if type(UserSelect) == 'string' then
+      vim.cmd('e ' .. DIR_ISSUE .. UserSelect)
+      defindMaps()
+      return
+    end
+    for _, value in pairs(UserSelect) do
+      vim.cmd('e ' .. DIR_ISSUE .. value)
+      defindMaps()
+    end
+  end
+
+  picker({
+    opts = ListIssue,
+    callBack = callback,
+    PREVIEW_OPTS = 'GH_LIST',
+    title = 'choose your issue history',
+    DIR_ISSUE = DIR_ISSUE
   })
 end
 

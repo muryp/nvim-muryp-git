@@ -9,7 +9,9 @@ return function(Arg)
   local action_state = require "telescope.actions.state"
   local callBack     = Arg.callBack     ---if user select/enter
   local Opts         = Arg.opts         ---list opts for choose
+  local PREVIEW_ARG  = Arg.PREVIEW_OPTS ---what preview use it
   local TITLE        = Arg.title        ---title for telescope
+  local DIR_ISSUE    = Arg.DIR_ISSUE
 
   -- Fungsi untuk mengaktifkan highlight sintaksis Markdown
   local function enable_markdown_highlight(bufnr)
@@ -30,24 +32,44 @@ return function(Arg)
         vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, CONTENT_RESULT[index])
       end))
   end
-  local showPreview = previewers.new_buffer_previewer {
-    get_buffer_by_name = function(_, entry)
-      return entry.filename
-    end,
-    define_preview = function(self, entry)
-      local bufnr = self.state.bufnr
-      local index = vim.split(entry.value, "\t")[1]
-      enable_markdown_highlight(bufnr)
-      -- add loading text if content will not generate now
-      vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { 'loading...' })
+  local showPreview
+  if PREVIEW_ARG == 'GH_ISSUE' then
+    showPreview = previewers.new_buffer_previewer {
+      get_buffer_by_name = function(_, entry)
+        return entry.filename
+      end,
+      define_preview = function(self, entry)
+        local bufnr = self.state.bufnr
+        local index = vim.split(entry.value, "\t")[1]
+        enable_markdown_highlight(bufnr)
+        -- add loading text if content will not generate now
+        vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, { 'loading...' })
 
-      if CONTENT_RESULT[index] == nil then
-        loadingCmd(index, bufnr)
-        return
+        if CONTENT_RESULT[index] == nil then
+          loadingCmd(index, bufnr)
+          return
+        end
+        vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, CONTENT_RESULT[index])
       end
-      vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, CONTENT_RESULT[index])
-    end
-  }
+    }
+  else
+    showPreview = previewers.new_buffer_previewer {
+      get_buffer_by_name = function(_, entry)
+        return entry.filename
+      end,
+      define_preview = function(self, entry)
+        local bufnr = self.state.bufnr
+        enable_markdown_highlight(bufnr)
+        local filename = DIR_ISSUE .. '/' .. entry.value
+        local content = {}
+        for line in io.lines(filename) do
+          table.insert(content,line)
+        end
+        -- add loading text if content will not generate now
+        vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, content)
+      end,
+    }
+  end
   pickers.new({}, {
     prompt_title = TITLE,
     finder = finders.new_table {

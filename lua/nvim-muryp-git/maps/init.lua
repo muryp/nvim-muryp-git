@@ -1,9 +1,0 @@
--- git add
--- git commit
--- merge
--- merge conflict
--- push
--- push conflict
--- add all, aommit 
--- change branch, commit, 
--- flow start
