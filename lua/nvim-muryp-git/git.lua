@@ -1,7 +1,18 @@
 local mapping = require('nvim-muryp-git.utils.mapping')
 
 local M = {}
-local gitCommitCmd = "cd %:p:h && cd $(git rev-parse --show-toplevel) && git add . && git commit"
+---@return string : check is commit or conflict
+local function checkCommitConflict()
+  local isTroble = vim.fn.system(
+    "[[ $(git diff --check) == '' ]] || [[ $(git diff HEAD) != '' ]] && echo 'true' || echo 'false'")
+  if isTroble == 'true' then
+    return 'git add . && git commit'
+  else
+    return 'echo "commited..."'
+  end
+end
+local gitCommitCmd =
+    "cd %:p:h && cd $(git rev-parse --show-toplevel) && " .. checkCommitConflict()
 M.gitCommit = function()
   vim.cmd('term ' .. gitCommitCmd)
 end
@@ -15,16 +26,18 @@ M.addSsh = function()
   local CMD = [[ && eval "$(ssh-agent -s)" && ssh-add ]] .. SSH_PATH
   return CMD
 end
----@return string 
+---@return string
 M.gitPush = function()
-  return " && git pull --all && git push --all"
+  local push =
+  ' && [[ $(git diff --check) == "" ]] && git push --all || echo "\\033[31merror: you have conflict:\\n$(git diff --check)"'
+  return " && git pull --all" .. push
 end
 M.gitSshPush = function()
-  vim.cmd('term '..gitCommitCmd .. M.addSsh() .. M.gitPush())
+  vim.cmd('term ' .. gitCommitCmd .. M.addSsh() .. M.gitPush())
 end
 
 M.pull = function()
-  vim.cmd('term git pull')
+  vim.cmd('term git pull --all')
 end
 
 M.maps = function()
