@@ -1,9 +1,9 @@
 local mapping = require('nvim-muryp-git.utils.mapping')
 
 local M = {}
-local gitCommitCmd = " && cd $(git rev-parse --show-toplevel) && git add . && git commit"
+local gitCommitCmd = "cd %:p:h && cd $(git rev-parse --show-toplevel) && git add . && git commit"
 M.gitCommit = function()
-  vim.cmd('term ' .. "cd %:p:h" .. gitCommitCmd)
+  vim.cmd('term ' .. gitCommitCmd)
 end
 M.addSsh = function()
   local SshPath = require('nvim-muryp-git').Setup.SSH_PATH
@@ -11,23 +11,16 @@ M.addSsh = function()
   for _, PATH in pairs(SshPath) do
     SSH_PATH = SSH_PATH .. PATH .. ' '
   end
-  local CMD = [[eval "$(ssh-agent -s)" && ssh-add ]] .. SSH_PATH
+  ---@type string
+  local CMD = [[ && eval "$(ssh-agent -s)" && ssh-add ]] .. SSH_PATH
   return CMD
 end
+---@return string 
 M.gitPush = function()
-  ---@type string
-  local PATH_NOW = vim.fn.expand('%:h')
-  local result = ''
-  if PATH_NOW ~= '' then
-    ---@type string
-    result = ' && cd ' .. PATH_NOW
-  end
-  ---@type string
-  result = result .. " && git push --all"
-  return result
+  return " && git pull --all && git push --all"
 end
 M.gitSshPush = function()
-  vim.cmd('term ' .. M.addSsh() .. M.gitPush())
+  vim.cmd('term '..gitCommitCmd .. M.addSsh() .. M.gitPush())
 end
 
 M.pull = function()
@@ -45,9 +38,7 @@ M.maps = function()
     c = { ':term git commit<CR>', "COMMIT" },
     a = { ':term gh issue create<CR>', "ADD_ISSUE" },
     v = { M.gitCommit, "ADD+COMMIT" },
-    p = { function()
-      M.gitSshPush()
-    end, "SSH+PUSH" },
+    p = { M.gitSshPush, "SSH+PUSH" },
     e = { ':term git push --all<CR>', "PUSH" },
     P = { M.pull, "PULL" },
   }
