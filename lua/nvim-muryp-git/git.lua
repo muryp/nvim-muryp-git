@@ -5,7 +5,7 @@ local M = {}
 local function checkCommitConflict()
   local isTroble = vim.fn.system(
     "[[ $(git diff --check) == '' ]] || [[ $(git diff HEAD) != '' ]] && echo 'true' || echo 'false'")
-  if isTroble == 'true' then
+  if isTroble == 'true\n' then
     return 'git add . && git commit'
   else
     return 'echo "commited..."'
