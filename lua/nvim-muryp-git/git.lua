@@ -3,9 +3,8 @@ local mapping = require('nvim-muryp-git.utils.mapping')
 local M = {}
 ---@return string : check is commit or conflict
 local function checkCommitConflict()
-  local isTroble = vim.fn.system(
-    "[[ $(git diff --check) == '' ]] || [[ $(git diff HEAD) != '' ]] && echo 'true' || echo 'false'")
-  if isTroble == 'true' then
+  local isTroble = vim.fn.system("[[ $(git diff --check) == '' ]] && echo $([[ $(git diff HEAD) != '' ]] && echo 'true' || echo 'false') || echo false")
+  if isTroble == 'true\n' then
     return 'git add . && git commit'
   else
     return 'echo "commited..."'
