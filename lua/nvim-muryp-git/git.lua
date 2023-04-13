@@ -10,6 +10,7 @@ local function checkCommitConflict()
     return 'echo "commited..."'
   end
 end
+---@return string : commit cmd
 local gitCommitCmd = function ()
   return "cd %:p:h && cd $(git rev-parse --show-toplevel) && " .. checkCommitConflict()
 end
