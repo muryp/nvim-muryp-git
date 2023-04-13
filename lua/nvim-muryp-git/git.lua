@@ -10,10 +10,12 @@ local function checkCommitConflict()
     return 'echo "commited..."'
   end
 end
-local gitCommitCmd =
-    "cd %:p:h && cd $(git rev-parse --show-toplevel) && " .. checkCommitConflict()
+local gitCommitCmd = function ()
+  return "cd %:p:h && cd $(git rev-parse --show-toplevel) && " .. checkCommitConflict()
+end
+
 M.gitCommit = function()
-  vim.cmd('term ' .. gitCommitCmd)
+  vim.cmd('term ' .. gitCommitCmd())
 end
 M.addSsh = function()
   local SshPath = require('nvim-muryp-git').Setup.SSH_PATH
@@ -33,7 +35,7 @@ M.gitPush = function()
 end
 M.gitSshPush = function()
   -- print('term ' .. gitCommitCmd .. M.addSsh() .. M.gitPush())
-  vim.cmd('term ' .. gitCommitCmd .. M.addSsh() .. M.gitPush())
+  vim.cmd('term ' .. gitCommitCmd() .. M.addSsh() .. M.gitPush())
 end
 
 M.pull = function()
