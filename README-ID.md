@@ -1,4 +1,4 @@
-Language : English | [Indonesia](./README-ID.md)
+Language : [English](./README.md) | Indonesia
 
 [![License: Apache](https://img.shields.io/badge/License-Apache-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 ![Neovim version](https://img.shields.io/badge/Neovim-0.8.x-green.svg)
@@ -9,16 +9,16 @@ Language : English | [Indonesia](./README-ID.md)
 [![Last Commit](https://img.shields.io/github/last-commit/muryp/nvim-muryp-git)](https://github.com/muryp/nvim-muryp-git/commits/master)
 [![Open Issues](https://img.shields.io/github/issues/muryp/nvim-muryp-git)](https://github.com/muryp/nvim-muryp-git/issues)
 # Plugin Nvim MuryP Git
-easy use git and git issue in nvim, with telescope.
+Plugin untuk memudahkan penggunaan git dan gh issue di nvim, dengan bantuan plugin `telescope`.
 ## feature
 - shortcut : git commit, push, ssh add, pull
 - gh issue : CRUD
 ## requirement
-- gh cli : use for issue
-- whichkey : for mapping
+- gh cli : untuk mengambil dan memperbarui issue
+- whichkey : bantuan keymap
 - git
 - nvim 0.8+
-- telescope : for list option
+- telescope : untuk daftar isi/pencarian issue
 ## install
 - packer
 
@@ -44,23 +44,21 @@ use {
 ```
 ## how use it
 ### git
-use `<leader>g` then will show what can do (wichkey required) :
-- `<leader>ga` : add gh issue
-- `<leader>gb` : branch
+Tekan `<leader>g` untuk melihat cmd apa saja (dibutuhkan plugin whichkey) :
+- `<leader>ga` : menambahkan issue repo github
+- `<leader>gb` : mengganti branch
 - `<leader>gc` : commit
 - `<leader>ge` : push
-- `<leader>gf` : gitflow
-- `<leader>gh` : history gh issue
-- `<leader>gi` : gh issue (online)
-- `<leader>gp` : git add, commit, ssh, pull, and push to git
+- `<leader>gf` : ganti branch lalu merge
+- `<leader>gh` : mencari issue di history
+- `<leader>gi` : mencari issue (online)
+- `<leader>gp` : git add => commit=> ssh=> pull=> push to git
 - `<leader>gP` : pull request
-- `<leader>gs` : status/list uncommited
+- `<leader>gs` : mencari file yang belum di commit
 - `<leader>gv` : add and commit
 ### github issue
-- use `<leader>gi` to get list issue (online)
-or
-- use `<leader>gh` to get list issue (offline)
-- after choose issue, press `<leader><leader>g` then will show what we can do
+- pilih issue menggunakan `<leader><leader>gi` atau `<leader><leader>gh`
+- setelah itu, tekan `<leader><leader>g` untuk menampilkan mapping (dibutuhkan plugin whichkey)
 
 ## Api
 - git commit
@@ -95,9 +93,8 @@ require('nvim-muryp-git.telescope.gh.ghIssue.maps').push()
 ```lua
 require('nvim-muryp-git.telescope.gh.ghIssue.maps').delete()
 ```
-
 ## Lisensi
-The `nvim-muryp-git` plugin is distributed under the **Apache License 2.0**. Please refer to the `LICENSE` file for more information about this license.
+Plugin `nvim-muryp-git` didistribusikan dengan lisensi `Apache License 2.0`. Silakan merujuk ke berkas `LICENSE` untuk informasi lebih lanjut mengenai lisensi ini.
 
-## Contributing
-We greatly appreciate contributions from anyone can produce **issue** or **maintaine code** to help this repo. Please read `CONTRIBUTE.md` for more info.
+## Kontribusi
+Kami mengharigai kontribusi anda baik berupa `issue` maupun `memperbaiki kode`. Silahkan baca berkas `CONTRIBUTE-ID.md` untuk informasi lebih lanjut.
