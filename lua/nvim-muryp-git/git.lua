@@ -4,11 +4,11 @@ local M = {}
 ---@return string : check is commit or conflict
 local function checkCommitConflict()
   local isTroble = vim.fn.system(
-  "[[ $(git diff --check) == '' ]] && echo $([[ $(git status -s) != '' ]] && echo 'true' || echo 'uncommited...') || echo 'conflict...'")
+  "[[ $(git diff --check) == '' ]] && echo $([[ $(git status -s) != '' ]] && echo 'true' || echo 'no_commit...') || echo 'conflict...'")
   if isTroble == 'true\n' then
     return 'git add . && git commit'
   else
-    return 'echo ' .. isTroble
+    return 'echo ' .. string.gsub(isTroble,'\n','')
   end
 end
 ---@return string : commit cmd
@@ -36,7 +36,8 @@ M.gitPush = function()
   return " && git pull --all" .. push
 end
 M.gitSshPush = function()
-  -- print('term ' .. gitCommitCmd .. M.addSsh() .. M.gitPush())
+  -- print(vim.inspect(gitCommitCmd()))
+  -- print('term ' .. gitCommitCmd() .. M.addSsh() .. M.gitPush())
   vim.cmd('term ' .. gitCommitCmd() .. M.addSsh() .. M.gitPush())
 end
 
