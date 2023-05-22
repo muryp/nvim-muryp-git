@@ -18,6 +18,7 @@ jobs:
         uses: muryp/semver-action@main
       - name: Create Release
         id: create_release
+        if: ${{ steps.createTag.outputs.NEW_TAG != 'false' }}
         uses: actions/create-release@latest
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
