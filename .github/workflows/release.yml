@@ -1,0 +1,30 @@
+name: Create Release
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  create_release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Git checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Create CHANGELOG and new version
+        id: createTag
+        uses: muryp/semver-action@main
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@latest
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ steps.createTag.outputs.TAG }}
+          release_name: Release ${{ steps.createTag.outputs.TAG }}
+          body: |
+            ${{ steps.createTag.outputs.MSG }}
+          draft: false
+          prerelease: ${{ steps.createTag.outputs.BETA }}
