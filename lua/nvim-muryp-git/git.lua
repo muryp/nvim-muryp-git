@@ -35,12 +35,18 @@ end
 ---@return string
 M.gitPush = function(DEFAULT_REMOTE)
   local REMOTE = vim.fn.input('what repo ? ', DEFAULT_REMOTE)
+  local PULL = vim.fn.input('Use PUll (y/n) ? ')
   local BRANCH = vim.fn.system('git symbolic-ref --short HEAD')
   local TARGET_HOST = REMOTE .. ' ' .. BRANCH
   local PUSH =
-      ' && [[ $(git diff --check) == "" ]] && git push ' ..
+      ' [[ $(git diff --check) == "" ]] && git push ' ..
       TARGET_HOST .. ' || echo "\\033[31merror: you have conflict:\\n$(git diff --check)"'
-  return " && git pull " .. TARGET_HOST .. PUSH
+  if PULL == 'y' or PULL == 'Y' then
+    PULL = " && git pull " .. TARGET_HOST .. ' &&'
+  else
+    PULL = ' &&'
+  end
+  return PULL .. PUSH
 end
 ---@param opts string | nil remote
 ---@return nil vim.cmd commit, pull, push with ssh,
@@ -81,6 +87,7 @@ M.maps = function()
       name = "PUSH",
       p = { M.gitSshPush, "COMMIT+SSH+PULL+PUSH" },
       a = { ':term git push --all<CR>', "PUSH ALL" },
+      s = { M.addSsh('term ') .. M.gitPush('origin'), "SSH+PULL+PUSH" },
     },
     P = {
       name = "PULL",
