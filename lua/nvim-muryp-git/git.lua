@@ -69,6 +69,10 @@ M.pull = function(opts)
   local BRANCH = vim.fn.system('git symbolic-ref --short HEAD') ---@type string
   vim.cmd('term ' .. M.addSsh('') .. '&& git pull ' .. DEFAULT_REMOTE .. ' ' .. BRANCH)
 end
+---@return nil vim.cmd push single with ssh
+M.singlePush = function()
+  return vim.cmd(M.addSsh('term ') .. M.gitPush('origin'))
+end
 
 M.maps = function()
   local MAPS = {
@@ -85,7 +89,7 @@ M.maps = function()
       name = "PUSH",
       p = { M.gitSshPush, "COMMIT+SSH+PULL+PUSH" },
       a = { ':term git push --all<CR>', "PUSH ALL" },
-      s = { M.addSsh('term ') .. M.gitPush('origin'), "SSH+PULL+PUSH" },
+      s = { M.singlePush, "SSH+PULL+PUSH" },
     },
     P = {
       name = "PULL",
