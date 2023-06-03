@@ -5,10 +5,7 @@ local M = {}
 ---@param ISSUE_NUMBER number: the index in line_manager
 ---@return string[]: {body, name file, dirloc}
 M.getContent = function(ISSUE_NUMBER)
-  local GET_GIT_DIR = vim.fn.system("git rev-parse --show-toplevel")
-  vim.cmd('cd ' .. GET_GIT_DIR)
-  local GET_DIR_ROOT_GIT = GET_GIT_DIR:gsub('\n', '')
-  local DIR_LOC_CACHE = GET_DIR_ROOT_GIT .. "/.git/muryp/gh_issue" ---@type string
+  local DIR_LOC_CACHE = require('nvim-muryp-git.telescope.gh').cacheDir()
   local GetIssueData = getIssue({ ISSUE_NUMBER = ISSUE_NUMBER })
   local HEADER_ISSUE_STR = headerInfo({ GetIssueData = GetIssueData })
   local FILE_NAME = "/" ..

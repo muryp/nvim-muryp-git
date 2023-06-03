@@ -1,4 +1,4 @@
----@param Arg {callBack:function,opts:Object,PREVIEW_OPTS:'GH_ISSUE'|'FILE'|nil,title:string,DIR_ISSUE:string}
+---@param Arg {callBack:function,opts:Object,PREVIEW_OPTS:'GH_ISSUE'|'FILE'|nil,title:string}
 ---@return nil : Telescope custom list
 return function(Arg)
   local pickers      = require "telescope.pickers"
@@ -11,7 +11,6 @@ return function(Arg)
   local Opts         = Arg.opts         ---list opts for choose
   local PREVIEW_ARG  = Arg.PREVIEW_OPTS ---what preview use it
   local TITLE        = Arg.title        ---title for telescope
-  local DIR_ISSUE    = Arg.DIR_ISSUE
 
   -- Fungsi untuk mengaktifkan highlight sintaksis Markdown
   local function enable_markdown_highlight(bufnr)
@@ -59,10 +58,11 @@ return function(Arg)
         return entry.filename
       end,
       define_preview = function(self, entry)
+        local FILE = require('nvim-muryp-git.telescope.gh').cacheDir() .. entry.value
         local bufnr = self.state.bufnr
         enable_markdown_highlight(bufnr)
         local content = {}
-        for line in io.lines(entry.value) do
+        for line in io.lines(FILE) do
           table.insert(content, line)
         end
         -- add loading text if content will not generate now
