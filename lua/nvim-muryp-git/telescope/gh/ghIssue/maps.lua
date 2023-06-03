@@ -1,4 +1,5 @@
 local ghIssue = require('nvim-muryp-git.telescope.gh.ghIssue').ghIssue
+
 local M       = {}
 ---@return {getFile:string,getCurrentFile:string,getIssue:number,gitRoot:string}
 local getVar  = function()
@@ -24,7 +25,6 @@ M.push        = function()
   vim.cmd('term gh issue edit ' .. ISSUE_NUMBER .. ' --body ' .. '"$(echo "' .. BODY_ISSUE .. '")"')
 end
 M.update      = function()
-  local ghIssue      = require('nvim-muryp-git.telescope.gh.ghIssue').ghIssue
   local ISSUE_NUMBER = getVar().getIssue ---@type number
   ghIssue(ISSUE_NUMBER)
 end
@@ -34,7 +34,10 @@ M.delete      = function()
   vim.cmd('bd')
 end
 M.addIssue    = function()
-  local NUMBER_ISSUE = vim.fn.input('number issue ? ')
+  local NUMBER_ISSUE = vim.fn.input('number issue ? ') ---@type number
+  if NUMBER_ISSUE == '' or NUMBER_ISSUE == nil then
+    return print('type number please...')
+  end
   ghIssue(NUMBER_ISSUE)
 end
 M.maps        = function()
