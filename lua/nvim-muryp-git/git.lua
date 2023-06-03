@@ -3,8 +3,7 @@ local mapping = require('nvim-muryp-git.utils.mapping')
 local M = {}
 ---@return string : check is commit or conflict
 local function checkCommitConflict()
-  local isTroble = vim.fn.system(
-    "[[ $(git status | grep \"conflict\") ]] && echo $([[ $(git status --porcelain) ]] && echo 'true' || echo 'no_commit...') || echo 'conflict...'")
+  local isTroble = vim.fn.system("[[ $(git diff --check) == '' ]] && echo $([[ $(git status --porcelain) ]] && echo 'true' || echo 'no_commit...') || echo 'conflict...'")
   if isTroble == 'true\n' then
     return 'git add . && git commit'
   else
@@ -34,7 +33,7 @@ end
 M.gitPush = function(DEFAULT_REMOTE)
   local REMOTE = vim.fn.input('what repo ? ', DEFAULT_REMOTE)
   local PULL = vim.fn.input('Use PUll (y/n) ? ')
-  local BRANCH = vim.fn.system('git symbolic-ref --short HEAD')
+  local BRANCH = vim.fn.system('git symbolic-ref --short HEAD'):gsub('\n',''):gsub('\r','')
   local TARGET_HOST = REMOTE .. ' ' .. BRANCH
   local PUSH =
       ' [[ $(git diff --check) == "" ]] && git push ' ..
