@@ -36,7 +36,10 @@ use {
         --   add mapping git in here
         -- end,
       -- },
-      SSH_PATH = { '~/ssh/github' }
+      SSH_PATH = { '~/ssh/github' },
+      CACHE_DIR = function()
+        return 'string'
+      end, 
     }
   end
 }
@@ -110,6 +113,15 @@ require('nvim-muryp-git.telescope.gh.ghIssue.maps').push()
 ```lua
 require('nvim-muryp-git.telescope.gh.ghIssue.maps').delete()
 ```
+- update local file with number
+```lua
+require('nvim-muryp-git.telescope.gh.ghIssue.maps').addIssue()
+```
+
+## Telescope Register
+- `Telescope git_flow` : checkout and merge
+- `Telescope git_issue` : get list issue online and create chachce then open
+- `Telescope git_issue` : get list issue online and create chachce then open
 
 ## Lisensi
 The `nvim-muryp-git` plugin is distributed under the **Apache License 2.0**. Please refer to the `LICENSE` file for more information about this license.
