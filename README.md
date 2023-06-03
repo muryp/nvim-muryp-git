@@ -52,10 +52,16 @@ use `<leader>g` then will show what can do (wichkey required) :
 - `<leader>gf` : gitflow
 - `<leader>gh` : history gh issue
 - `<leader>gi` : gh issue (online)
-- `<leader>gp` : git add, commit, ssh, pull, and push to git
-- `<leader>gP` : pull request
+- `<leader>gpp` : git add all, commit, ssh, pull, and push to git
+- `<leader>gps` : git ssh, pull, and push to git
+- `<leader>gpa` : git push all to git
+- `<leader>gPP` : pull request
+- `<leader>gPA` : pull request --all
 - `<leader>gs` : status/list uncommited
 - `<leader>gv` : add and commit
+- `<leader>gop` : git add all, commit, ssh, pull, and push to git with opts remote name
+- `<leader>goP` : git pull with opts remote name
+
 ### github issue
 - use `<leader>gi` to get list issue (online)
 or
@@ -65,18 +71,26 @@ or
 ## Api
 - git commit
 ```lua
+---cmd add and commits
 require('nvim-muryp-git.git').gitCommit()
 ```
 - add ssh
 ```lua
-require('nvim-muryp-git.git').addSsh()
+---generate string cmd to add ssh
+---@param FIRST_LETTER string FIRST_LETTER cmd
+---@return string
+require('nvim-muryp-git.git').addSsh(' && ')
 ```
 - sshpush
 ```lua
+---@param opts string | nil remote
+---@return nil vim.cmd commit, pull, push with ssh,
 require('nvim-muryp-git.git').gitSshPush()
 ```
 - pull
 ```lua
+---@param opts string | nil remote name
+---@return nil vim.cmd pull with ssh,
 require('nvim-muryp-git.git').pull()
 ```
 - edit

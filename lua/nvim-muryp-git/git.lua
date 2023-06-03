@@ -1,6 +1,4 @@
 local mapping = require('nvim-muryp-git.utils.mapping')
---opts :
---remote
 
 local M = {}
 ---@return string : check is commit or conflict
@@ -59,8 +57,8 @@ M.gitSshPush = function(opts)
   end
   return vim.cmd('term ' .. M.gitCommitCmd() .. M.addSsh(' && ') .. M.gitPush(DEFAULT_REMOTE))
 end
----@param opts string | nil remote
----@return nil vim.cmd commit, pull, push with ssh,
+---@param opts string | nil remote name
+---@return nil vim.cmd pull with ssh,
 M.pull = function(opts)
   local DEFAULT_REMOTE
   if opts == nil then
