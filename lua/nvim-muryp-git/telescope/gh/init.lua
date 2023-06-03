@@ -33,7 +33,7 @@ M.getListIssue        = function()
 end
 
 ---issue list offline
-M.getListIssueHistory = function()
+M.getListIssueCache = function()
   local GET_GIT_DIR = string.gsub(vim.fn.system("git rev-parse --show-toplevel"), '\n', '')
   local DIR_ISSUE   = GET_GIT_DIR .. '/.git/muryp/'
   local GET_DIR     = vim.fn.system("ls " .. DIR_ISSUE)
@@ -60,7 +60,7 @@ M.getListIssueHistory = function()
     opts = ListIssue,
     callBack = callback,
     PREVIEW_OPTS = 'GH_LIST',
-    title = 'choose your issue history',
+    title = 'choose your issue cache',
     DIR_ISSUE = DIR_ISSUE
   })
 end

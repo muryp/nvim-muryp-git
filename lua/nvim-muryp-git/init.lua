@@ -36,12 +36,12 @@ M.resgisterTelescope = function()
   local plug               = require('telescope.builtin')
   local gitFlow            = require('nvim-muryp-git.telescope.gitFlow')
   local ghIssue            = require('nvim-muryp-git.telescope.gh').getListIssue
-  local ghHistory          = require('nvim-muryp-git.telescope.gh').getListIssueHistory
+  local ghCache            = require('nvim-muryp-git.telescope.gh').getListIssueCache
   local git                = require('nvim-muryp-git.telescope.git')
 
   plug.git_flow            = gitFlow
   plug.git_issue           = ghIssue
-  plug.git_issue_history   = ghHistory
+  plug.git_issue_cache     = ghCache
   plug.git_commit_ssh_push = git.push
   plug.git_pull            = git.pull
 end
