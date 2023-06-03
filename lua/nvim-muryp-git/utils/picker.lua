@@ -1,4 +1,4 @@
----@param Arg {callBack:function,opts:Object,PREVIEW_OPTS:string,title:string,DIR_ISSUE:string}
+---@param Arg {callBack:function,opts:Object,PREVIEW_OPTS:'GH_ISSUE'|'FILE'|nil,title:string,DIR_ISSUE:string}
 ---@return nil : Telescope custom list
 return function(Arg)
   local pickers      = require "telescope.pickers"
@@ -53,7 +53,7 @@ return function(Arg)
         vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, CONTENT_RESULT[index])
       end
     }
-  else
+  elseif PREVIEW_ARG == 'FILE' then
     showPreview = previewers.new_buffer_previewer {
       get_buffer_by_name = function(_, entry)
         return entry.filename
@@ -61,9 +61,8 @@ return function(Arg)
       define_preview = function(self, entry)
         local bufnr = self.state.bufnr
         enable_markdown_highlight(bufnr)
-        local filename = DIR_ISSUE .. '/' .. entry.value
         local content = {}
-        for line in io.lines(filename) do
+        for line in io.lines(entry.value) do
           table.insert(content, line)
         end
         -- add loading text if content will not generate now

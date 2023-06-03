@@ -13,7 +13,7 @@ return function()
   end
 
   local function callback(selection)
-    print(vim.inspect(vim.cmd('!git checkout ' .. selection[1])))
+    print(vim.inspect(vim.cmd('!git checkout ' .. selection)))
   end
 
   picker({
