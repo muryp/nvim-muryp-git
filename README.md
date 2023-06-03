@@ -93,19 +93,20 @@ require('nvim-muryp-git.git').gitSshPush()
 ---@return nil vim.cmd pull with ssh,
 require('nvim-muryp-git.git').pull()
 ```
-- edit
+- edit in cli
 ```lua
 require('nvim-muryp-git.telescope.gh.ghIssue.maps').edit()
 ```
-- open
+- open in browser
 ```lua
 require('nvim-muryp-git.telescope.gh.ghIssue.maps').open()
 ```
-- update local from online
+- update local file
 ```lua
 require('nvim-muryp-git.telescope.gh.ghIssue.maps').push()
 ```
-- delete issue (cannnot undo)
+- delete issue
+> warning: this really delete issue on github
 ```lua
 require('nvim-muryp-git.telescope.gh.ghIssue.maps').delete()
 ```
