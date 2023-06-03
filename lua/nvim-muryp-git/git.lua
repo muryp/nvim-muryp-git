@@ -79,11 +79,14 @@ M.maps = function()
     name = "GIT",
     b = { ':Telescope git_branches<CR>', "BRANCH" },
     f = { ':Telescope git_flow<CR>', "FLOW" },
-    h = { ':Telescope git_issue_cache<CR>', "EDIT_ISSUE_ON_CACHE" },
-    i = { ':Telescope git_issue<CR>', "EDIT_ISSUE" },
+    i = {
+      c = { ':Telescope git_issue_cache<CR>', "EDIT_ISSUE_ON_CACHE" },
+      i = { ':Telescope git_issue<CR>', "EDIT_ISSUE" },
+      o = { require('nvim-muryp-git.telescope.gh.ghIssue.maps').addIssue, "ADD_ISSUE_TO_CHACE" },
+      a = { ':term gh issue create<CR>', "ADD_ISSUE" },
+    },
     s = { ':Telescope git_status<CR>', "STATUS" },
     c = { ':term git commit<CR>', "COMMIT" },
-    a = { ':term gh issue create<CR>', "ADD_ISSUE" },
     v = { M.gitCommit, "ADD_ALL+COMMIT" },
     p = {
       name = "PUSH",
