@@ -17,7 +17,7 @@ M.getContent = function(ISSUE_NUMBER)
   local FILE_RESULT = DIR_LOC_HISTORY .. FILE_NAME ---@type string
   local ISSUE_HEADER = '+++' .. HEADER_ISSUE_STR .. '+++\n' ---@type string
   local HELP_HEADER = require('nvim-muryp-git.telescope.gh.ghIssue.helper')
-  local content = ISSUE_HEADER .. HELP_HEADER .. GetIssueData.body ---@type string
+  local content = ISSUE_HEADER .. HELP_HEADER .. string.gsub(GetIssueData.body, "\r", "") ---@type string
   return { content, FILE_RESULT, DIR_LOC_HISTORY }
 end
 ---@param ISSUE_NUMBER number: the index in line_manager

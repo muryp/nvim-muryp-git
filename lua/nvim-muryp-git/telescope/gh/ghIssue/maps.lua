@@ -18,7 +18,7 @@ M.push = function()
   local VAR          = getVar()
   local CURRENT_FILE = VAR.getCurrentFile
   local ISSUE_NUMBER = VAR.getIssue
-  local BODY_ISSUE   = CURRENT_FILE:gsub("<!--.*-->\n", ""):gsub("+++.*+++\n", ""):gsub("\n[^\n]*$", ""):gsub('"','\\"'):gsub('\n','\\\\n')
+  local BODY_ISSUE   = CURRENT_FILE:gsub("<!--.*-->\n", ""):gsub("+++.*+++\n", ""):gsub("\n[^\n]*$", ""):gsub('"','\\"'):gsub('\n','\\\\n'):gsub('`','\\`'):gsub('#','\\#')
   vim.cmd('term gh issue edit ' .. ISSUE_NUMBER .. ' --body ' .. '"$(echo "' .. BODY_ISSUE .. '")"')
 end
 M.update = function()
