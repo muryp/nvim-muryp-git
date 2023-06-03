@@ -1,7 +1,7 @@
 -- gh issue list
 local picker        = require "nvim-muryp-git.utils.picker"
 local ghIssue       = require('nvim-muryp-git.telescope.gh.ghIssue').ghIssue
-local cacheDir       = require('nvim-muryp-git').Setup.CACHE_DIR
+local cacheDir      = require('nvim-muryp-git').Setup.CACHE_DIR
 local M             = {}
 
 --- get issue list get from online
