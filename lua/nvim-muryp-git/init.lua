@@ -10,10 +10,17 @@ local Setup = {
       require('nvim-muryp-git.git').maps()
     end,
   },
-  SSH_PATH = { '$HOME/.ssh/github' }
+  SSH_PATH = { '$HOME/.ssh/github' },
+  ---@return string DIR_ISSUE location of dir cache
+  CACHE_DIR = function()
+    local GET_GIT_DIR = string.gsub(vim.fn.system("git rev-parse --show-toplevel"), '\n', '')
+    local DIR_ISSUE   = GET_GIT_DIR .. '/.git/muryp/gh_issue/'
+    return DIR_ISSUE
+  end
+
 }
 
----@param arg {mapping:{git:function,issue:function},SSH_PATH:string[]}
+---@param arg {mapping:{git:function,issue:function},SSH_PATH:string[],CACHE_DIR:function,}
 M.setup = function(arg)
   if arg.mapping ~= nil then
     if arg.mapping.git ~= nil then
@@ -25,6 +32,9 @@ M.setup = function(arg)
   end
   if arg.SSH_PATH ~= nil then
     Setup.SSH_PATH = arg.SSH_PATH
+  end
+  if arg.CACHE_DIR ~= nil then
+    Setup.CACHE_DIR = arg.CACHE_DIR
   end
   Setup.mapping.git()
 end
