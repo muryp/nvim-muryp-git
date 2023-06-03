@@ -1,17 +1,11 @@
 -- gh issue list
-local picker          = require "nvim-muryp-git.utils.picker"
-local ghIssue         = require('nvim-muryp-git.telescope.gh.ghIssue').ghIssue
-local M               = {}
+local picker        = require "nvim-muryp-git.utils.picker"
+local ghIssue       = require('nvim-muryp-git.telescope.gh.ghIssue').ghIssue
+local cacheDir       = require('nvim-muryp-git').Setup.CACHE_DIR
+local M             = {}
 
----@return string DIR_ISSUE location of dir cache
-M.cacheDir = function()
-  local GET_GIT_DIR = string.gsub(vim.fn.system("git rev-parse --show-toplevel"), '\n', '')
-  local DIR_ISSUE   = GET_GIT_DIR .. '/.git/muryp/gh_issue/'
-  return DIR_ISSUE
-end
-
----issue list get from online
-M.getListIssue        = function()
+--- get issue list get from online
+M.getListIssue      = function()
   local ListIssue = {}
   local ISSUE_LIST = vim.api.nvim_command_output("echo system('gh issue list')")
   for WORD in string.gmatch(ISSUE_LIST, "[^\r\n]+") do
@@ -41,8 +35,8 @@ end
 
 ---issue list offline
 M.getListIssueCache = function()
-  local GET_DIR     = vim.fn.system("ls " .. M.cacheDir())
-  local ListIssue   = {}
+  local GET_DIR   = vim.fn.system("ls " .. cacheDir())
+  local ListIssue = {}
   for FILE_NAME in string.gmatch(GET_DIR, "[^\r\n]+") do
     table.insert(ListIssue, FILE_NAME)
   end
@@ -51,12 +45,12 @@ M.getListIssueCache = function()
   local callback = function(UserSelect)
     local defindMaps = require('nvim-muryp-git').Setup.mapping.issue
     if type(UserSelect) == 'string' then
-      vim.cmd('e ' .. M.cacheDir() .. UserSelect)
+      vim.cmd('e ' .. cacheDir() .. UserSelect)
       defindMaps()
       return
     end
     for _, value in pairs(UserSelect) do
-      vim.cmd('e ' .. M.cacheDir() .. value)
+      vim.cmd('e ' .. cacheDir() .. value)
       defindMaps()
     end
   end

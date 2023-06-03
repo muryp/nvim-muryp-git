@@ -5,11 +5,11 @@ local M = {}
 ---@param ISSUE_NUMBER number: the index in line_manager
 ---@return string[]: {body, name file, dirloc}
 M.getContent = function(ISSUE_NUMBER)
-  local DIR_LOC_CACHE = require('nvim-muryp-git.telescope.gh').cacheDir()
+  local DIR_LOC_CACHE = require('nvim-muryp-git').Setup.CACHE_DIR()
   local GetIssueData = getIssue({ ISSUE_NUMBER = ISSUE_NUMBER })
   local HEADER_ISSUE_STR = headerInfo({ GetIssueData = GetIssueData })
   local FILE_NAME = "/" ..
-      ISSUE_NUMBER .. '-' .. GetIssueData.title .. '-' .. GetIssueData.state .. ".md"
+      ISSUE_NUMBER .. '-' .. GetIssueData.title:gsub('/',' or ') .. '-' .. GetIssueData.state .. ".md"
   local FILE_RESULT = DIR_LOC_CACHE .. FILE_NAME:gsub(' ','_') ---@type string
   local ISSUE_HEADER = '+++' .. HEADER_ISSUE_STR .. '+++\n' ---@type string
   local HELP_HEADER = require('nvim-muryp-git.telescope.gh.ghIssue.helper')

@@ -58,7 +58,7 @@ return function(Arg)
         return entry.filename
       end,
       define_preview = function(self, entry)
-        local FILE = require('nvim-muryp-git.telescope.gh').cacheDir() .. entry.value
+        local FILE = require('nvim-muryp-git').Setup.CACHE_DIR() .. entry.value
         local bufnr = self.state.bufnr
         enable_markdown_highlight(bufnr)
         local content = {}
