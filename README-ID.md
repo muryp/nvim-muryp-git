@@ -36,7 +36,10 @@ use {
         --   add mapping git in here
         -- end,
       -- },
-      SSH_PATH = { '~/ssh/github' }
+      SSH_PATH = { '~/ssh/github' },
+      -- CACHE_DIR = function()
+      --   return 'location/cache'
+      -- end,
     }
   end
 }
@@ -52,10 +55,15 @@ Tekan `<leader>g` untuk melihat cmd apa saja (dibutuhkan plugin whichkey) :
 - `<leader>gf` : ganti branch lalu merge
 - `<leader>gh` : mencari issue di history
 - `<leader>gi` : mencari issue (online)
-- `<leader>gp` : git add => commit=> ssh=> pull=> push to git
-- `<leader>gP` : pull request
+- `<leader>gpp` : git add all, commit, ssh, pull dan push ke remote
+- `<leader>gps` : git ssh, pull dan push ke remote
+- `<leader>gpa` : git push all ke remote
+- `<leader>gPP` : pull request
+- `<leader>gPA` : pull request --all
 - `<leader>gs` : mencari file yang belum di commit
 - `<leader>gv` : add and commit
+- `<leader>gop` : git add all, commit, ssh, pull dan push ke remote dengan pilihan nama remote
+- `<leader>goP` : git pull dengan pilihan nama remote
 ### github issue
 - pilih issue menggunakan `<leader><leader>gi` atau `<leader><leader>gh`
 - setelah itu, tekan `<leader><leader>g` untuk menampilkan mapping (dibutuhkan plugin whichkey)
@@ -63,35 +71,48 @@ Tekan `<leader>g` untuk melihat cmd apa saja (dibutuhkan plugin whichkey) :
 ## Api
 - git commit
 ```lua
+---menambahkan cmd dan commit
 require('nvim-muryp-git.git').gitCommit()
 ```
 - add ssh
 ```lua
-require('nvim-muryp-git.git').addSsh()
+---generate string cmd to add ssh (untuk ssh)
+---@param FIRST_LETTER string FIRST_LETTER cmd (cmd diawal)
+---@return string
+require('nvim-muryp-git.git').addSsh(' && ')
 ```
 - sshpush
 ```lua
+---@param opts string | nil remote
+---@return nil vim.cmd commit, pull, push with ssh,
 require('nvim-muryp-git.git').gitSshPush()
 ```
 - pull
 ```lua
+---@param opts string | nil remote name
+---@return nil vim.cmd pull with ssh,
 require('nvim-muryp-git.git').pull()
 ```
-- edit
+- edit melalui cli
 ```lua
 require('nvim-muryp-git.telescope.gh.ghIssue.maps').edit()
 ```
-- open
+- buka di browser
 ```lua
 require('nvim-muryp-git.telescope.gh.ghIssue.maps').open()
 ```
-- update local from online
+- memperbarui file cache
 ```lua
 require('nvim-muryp-git.telescope.gh.ghIssue.maps').push()
 ```
-- delete issue (cannnot undo)
+- megnhapus issue
+> peringatan: ini benar-benar menghapus di github
 ```lua
 require('nvim-muryp-git.telescope.gh.ghIssue.maps').delete()
+```
+- memperbarui file cache dengan nomor issue
+```lua
+require('nvim-muryp-git.telescope.gh.ghIssue.maps').addIssue()
 ```
 ## Lisensi
 Plugin `nvim-muryp-git` didistribusikan dengan lisensi `Apache License 2.0`. Silakan merujuk ke berkas `LICENSE` untuk informasi lebih lanjut mengenai lisensi ini.

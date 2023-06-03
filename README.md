@@ -21,7 +21,6 @@ easy use git and git issue in nvim, with telescope.
 - telescope : for list option
 ## install
 - packer
-
 ```lua
 use {
   'muryp/nvim-muryp-git',
@@ -37,9 +36,9 @@ use {
         -- end,
       -- },
       SSH_PATH = { '~/ssh/github' },
-      CACHE_DIR = function()
-        return 'string'
-      end, 
+      -- CACHE_DIR = function()
+      --   return 'location/cache'
+      -- end,
     }
   end
 }
@@ -55,14 +54,14 @@ use `<leader>g` then will show what can do (wichkey required) :
 - `<leader>gf` : gitflow
 - `<leader>gh` : history gh issue
 - `<leader>gi` : gh issue (online)
-- `<leader>gpp` : git add all, commit, ssh, pull, and push to git
-- `<leader>gps` : git ssh, pull, and push to git
-- `<leader>gpa` : git push all to git
+- `<leader>gpp` : git add all, commit, ssh, pull, and push to remote
+- `<leader>gps` : git ssh, pull, and push to remote
+- `<leader>gpa` : git push all to remote
 - `<leader>gPP` : pull request
 - `<leader>gPA` : pull request --all
 - `<leader>gs` : status/list uncommited
 - `<leader>gv` : add and commit
-- `<leader>gop` : git add all, commit, ssh, pull, and push to git with opts remote name
+- `<leader>gop` : git add all, commit, ssh, pull, and push to remote with opts remote name
 - `<leader>goP` : git pull with opts remote name
 
 ### github issue
