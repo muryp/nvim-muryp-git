@@ -8,17 +8,16 @@ M.getContent = function(ISSUE_NUMBER)
   local GET_GIT_DIR = vim.fn.system("git rev-parse --show-toplevel")
   vim.cmd('cd ' .. GET_GIT_DIR)
   local GET_DIR_ROOT_GIT = GET_GIT_DIR:gsub('\n', '')
-  local DIR_LOC_HISTORY = GET_DIR_ROOT_GIT .. "/.git/muryp" ---@type string
+  local DIR_LOC_CACHE = GET_DIR_ROOT_GIT .. "/.git/muryp/gh_issue" ---@type string
   local GetIssueData = getIssue({ ISSUE_NUMBER = ISSUE_NUMBER })
   local HEADER_ISSUE_STR = headerInfo({ GetIssueData = GetIssueData })
-  local FILE_NAME = "/gh_issue-" ..
-      '-' ..
-      ISSUE_NUMBER .. '-' .. string.gsub(GetIssueData.title, ' ', '_') .. '-' .. GetIssueData.state .. ".md"
-  local FILE_RESULT = DIR_LOC_HISTORY .. FILE_NAME ---@type string
+  local FILE_NAME = "/" ..
+      ISSUE_NUMBER .. '  ' .. GetIssueData.title .. '  ' .. GetIssueData.state .. ".md"
+  local FILE_RESULT = DIR_LOC_CACHE .. FILE_NAME ---@type string
   local ISSUE_HEADER = '+++' .. HEADER_ISSUE_STR .. '+++\n' ---@type string
   local HELP_HEADER = require('nvim-muryp-git.telescope.gh.ghIssue.helper')
   local content = ISSUE_HEADER .. HELP_HEADER .. string.gsub(GetIssueData.body, "\r", "") ---@type string
-  return { content, FILE_RESULT, DIR_LOC_HISTORY }
+  return { content, FILE_RESULT, DIR_LOC_CACHE }
 end
 ---@param ISSUE_NUMBER number: the index in line_manager
 ---create file and add maps
