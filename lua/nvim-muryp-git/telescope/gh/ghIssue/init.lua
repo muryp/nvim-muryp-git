@@ -12,8 +12,8 @@ M.getContent = function(ISSUE_NUMBER)
   local GetIssueData = getIssue({ ISSUE_NUMBER = ISSUE_NUMBER })
   local HEADER_ISSUE_STR = headerInfo({ GetIssueData = GetIssueData })
   local FILE_NAME = "/" ..
-      ISSUE_NUMBER .. '  ' .. GetIssueData.title .. '  ' .. GetIssueData.state .. ".md"
-  local FILE_RESULT = DIR_LOC_CACHE .. FILE_NAME ---@type string
+      ISSUE_NUMBER .. '-' .. GetIssueData.title .. '-' .. GetIssueData.state .. ".md"
+  local FILE_RESULT = DIR_LOC_CACHE .. FILE_NAME:gsub(' ','_') ---@type string
   local ISSUE_HEADER = '+++' .. HEADER_ISSUE_STR .. '+++\n' ---@type string
   local HELP_HEADER = require('nvim-muryp-git.telescope.gh.ghIssue.helper')
   local content = ISSUE_HEADER .. HELP_HEADER .. string.gsub(GetIssueData.body, "\r", "") ---@type string
