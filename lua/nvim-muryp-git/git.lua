@@ -1,6 +1,5 @@
-local mapping = require('nvim-muryp-git.utils.mapping')
-
 local M = {}
+
 ---@return string
 M.SSH_CMD = function()
   local SshPath = require('nvim-muryp-git').Setup.SSH_PATH
@@ -65,86 +64,6 @@ M.gitMainCmd = function(opts)
       vim.cmd(CMD)
     end)
   end)
-end
-
-M.maps = function()
-  local MAPS = {
-    name = "GIT",
-    b = { ':Telescope git_branches<CR>', "BRANCH" },
-    f = { ':Telescope git_flow<CR>', "FLOW" },
-    i = {
-      c = { ':Telescope git_issue_cache<CR>', "EDIT_ISSUE_ON_CACHE" },
-      i = { ':Telescope git_issue<CR>', "EDIT_ISSUE" },
-      o = { require('nvim-muryp-git.telescope.gh.ghIssue.maps').addIssue, "ADD_ISSUE_TO_CHACE" },
-      a = { ':term gh issue create<CR>', "ADD_ISSUE" },
-    },
-    s = { ':Telescope git_status<CR>', "GIT_STATUS" },
-    c = { ':term git commit<CR>', "COMMIT" },
-    v = { function()
-      M.gitMainCmd({
-        add = true,
-        commit = true,
-      })
-    end, "ADD_ALL+COMMIT" },
-    p = {
-      name = "PUSH",
-      p = { function()
-        M.gitMainCmd({
-          add = true,
-          commit = true,
-          ssh = true,
-          remote_quest = true,
-          pull_quest = true,
-          push = true,
-        })
-      end, "ADD+COMMIT+SSH+PULL+PUSH" },
-      P = { function()
-        M.gitMainCmd({
-          remote_quest = true,
-          push = true,
-        })
-      end, "PUSH" },
-      a = { ':term ' .. M.SSH_CMD() .. ' && git push --all<CR>', "PUSH ALL WITH SSH" },
-      A = { ':term git push --all<CR>', "PUSH ALL" },
-      s = { function()
-        M.gitMainCmd({
-          push = true,
-          remote_quest = true,
-          pull_quest = true,
-        })
-      end, "SSH+PULL+PUSH" },
-      S = { function()
-        M.gitMainCmd({
-          push = true,
-          remote_quest = true,
-        })
-      end, "SSH+PUSH" },
-    },
-    P = {
-      name = "PULL",
-      A = { ':term git pull --all<CR>', "PULL ALL" },
-      a = { ':term ' .. M.SSH_CMD() .. ' && git pull --all<CR>', "PULL ALL WITH SSH" },
-      p = { function()
-        M.gitMainCmd({
-          remote_quest = true,
-          pull = true,
-        })
-      end, "PULL THIS BRANCH" },
-      P = { function()
-        M.gitMainCmd({
-          remote_quest = true,
-          pull = true,
-          ssh = true,
-        })
-      end, "PULL THIS BRANCH WITH SSH" },
-    },
-    o = {
-      name = "WITH TELESCOPE OPTS",
-      p = { ':Telescope git_commit_ssh_push<CR>', "COMMIT+SSH+PULL+PUSH" },
-      P = { ':Telescope git_pull<CR>', "PULL" },
-    },
-  }
-  mapping({ g = MAPS }, { prefix = "<leader>", noremap = true })
 end
 
 return M

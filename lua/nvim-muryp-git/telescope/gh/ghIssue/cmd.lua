@@ -7,16 +7,28 @@ local getVar  = function()
   local GET_CONTENT_FILE = vim.fn.system('cat ' .. getFile) ---@type string
   local _, _, getIssue   = string.find(GET_CONTENT_FILE, "https://github.com/.*/.*/issues/(%d*)") ---@type nil,nil,string
   local gitRoot          = vim.fn.system("git rev-parse --show-toplevel"):gsub('\n', '') ---@type string
+  if getIssue == '' then
+    return vim.api.nvim_err_writeln("ERR: isssue number not found. Be sure you're in correct file. This cmd only work in issue file patern." )
+  end
   return { getFile = getFile, getIssue = getIssue, gitRoot = gitRoot }
 end
 M.edit        = function()
   local arg = getVar()
+  if arg == nil then
+    return
+  end
   vim.cmd('term cd ' .. arg.gitRoot .. ' && gh issue edit ' .. arg.getIssue)
 end
 M.open        = function()
+  if getVar() == nil then
+    return
+  end
   vim.cmd('!gh issue view -w ' .. getVar().getIssue)
 end
 M.push        = function()
+  if getVar() == nil then
+    return
+  end
   local VAR          = getVar()
   local CURRENT_FILE = VAR.getFile
   local REGEX        = [[ | sed -z 's/<!--.*-->//g' | sed -e '/^+++/,/^+++/d']]
@@ -27,13 +39,19 @@ M.push        = function()
     vim.api.nvim_err_writeln(PUSH_INTO_GH)
     return
   end
-  print('succes push : '..PUSH_INTO_GH)
+  print('succes push : ' .. PUSH_INTO_GH)
 end
 M.update      = function()
+  if getVar() == nil then
+    return
+  end
   local ISSUE_NUMBER = getVar().getIssue ---@type number
   ghIssue(ISSUE_NUMBER)
 end
 M.delete      = function()
+  if getVar() == nil then
+    return
+  end
   local ISSUE_NUMBER = getVar().getIssue ---@type number
   vim.cmd('term gh issue delete ' .. ISSUE_NUMBER .. ' && rm %')
   vim.cmd('bd')
@@ -44,18 +62,5 @@ M.addIssue    = function()
     return print('type number please...')
   end
   ghIssue(NUMBER_ISSUE)
-end
-M.maps        = function()
-  local mapping = require('nvim-muryp-git.utils.mapping')
-  local IMPORT_THIS = ":lua require('nvim-muryp-git.telescope.gh.ghIssue.maps')"
-  mapping({
-    g = {
-      name = "ISSUE_CMD",
-      p = { IMPORT_THIS .. ".push()<CR>", "PUSH_INTO_GH" },
-      e = { IMPORT_THIS .. ".edit()<CR>", "EDIT" },
-      u = { IMPORT_THIS .. ".update()<CR>", "UPDATE_LOCAL" },
-      d = { IMPORT_THIS .. ".delete()<CR>", "DELETE" },
-    },
-  }, { prefix = "<leader><leader>", buffer = 0 })
 end
 return M

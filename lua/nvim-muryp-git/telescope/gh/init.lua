@@ -43,15 +43,12 @@ M.getListIssueCache = function()
   ---@param UserSelect string|string[]
   ---@return nil
   local callback = function(UserSelect)
-    local defindMaps = require('nvim-muryp-git').Setup.mapping.issue
     if type(UserSelect) == 'string' then
       vim.cmd('e ' .. cacheDir() .. UserSelect)
-      defindMaps()
       return
     end
     for _, value in pairs(UserSelect) do
       vim.cmd('e ' .. cacheDir() .. value)
-      defindMaps()
     end
   end
 

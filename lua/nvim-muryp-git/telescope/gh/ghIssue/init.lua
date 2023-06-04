@@ -23,6 +23,5 @@ M.ghIssue = function(ISSUE_NUMBER)
   os.execute("mkdir " .. content[3])
   os.execute('echo "' .. content[1] .. '" > ' .. content[2])
   vim.cmd('e ' .. content[2])
-  require('nvim-muryp-git').Setup.mapping.issue()
 end
 return M

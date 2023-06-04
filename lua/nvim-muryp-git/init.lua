@@ -1,15 +1,13 @@
-local M = {}
+local mapping = require('nvim-muryp-git.utils.mapping')
+local MAPS    = require('nvim-muryp-git.defaultMaps')
+local M       = {}
+print(vim.inspect(MAPS))
 
 M.git = require('nvim-muryp-git.git')
 local Setup = {
-  mapping = {
-    issue = function()
-      require('nvim-muryp-git.telescope.gh.ghIssue.maps').maps()
-    end,
-    git = function()
-      require('nvim-muryp-git.git').maps()
-    end,
-  },
+  mapping = function()
+    mapping({ g = MAPS }, { prefix = "<leader>", noremap = true })
+  end,
   SSH_PATH = { '$HOME/.ssh/github' },
   ---@return string DIR_ISSUE location of dir cache
   CACHE_DIR = function()
@@ -40,7 +38,7 @@ M.setup = function(arg)
   if arg.DEFAULT_REMOTE ~= nil then
     Setup.DEFAULT_REMOTE = arg.DEFAULT_REMOTE
   end
-  Setup.mapping.git()
+  Setup.mapping()
 end
 
 M.Setup = Setup
