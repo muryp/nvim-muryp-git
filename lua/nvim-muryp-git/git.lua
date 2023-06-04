@@ -1,22 +1,16 @@
 local mapping = require('nvim-muryp-git.utils.mapping')
 
 local M = {}
----@return string : check is commit or conflict
-local function checkCommitConflict()
-  local isTroble = vim.fn.system("[[ $(git diff --check) == '' ]] && echo $([[ $(git status --porcelain) ]] && echo 'true' || echo 'no_commit...') || echo 'conflict...'")
-  if isTroble == 'true\n' then
-    return 'git add . && git commit'
-  else
-    return 'echo ' .. string.gsub(isTroble, '\n', '')
-  end
-end
----@return string : commit cmd
-M.gitCommitCmd = function()
-  return "cd %:p:h && cd $(git rev-parse --show-toplevel) && " .. checkCommitConflict()
-end
-
+---@return string : is error or not
 M.gitCommit = function()
-  vim.cmd('term ' .. M.gitCommitCmd())
+  local isConflict = vim.fn.system('git diff --check')
+  if isConflict == '' then
+    vim.cmd('term [[ $(git status --porcelain) ]] && git add . && git commit')
+    return ''
+  else
+    vim.api.nvim_err_writeln(isConflict)
+    return 'err'
+  end
 end
 ---@param FIRST_LETTER string FIRST_LETTER cmd
 ---@return string
@@ -33,7 +27,7 @@ end
 M.gitPush = function(DEFAULT_REMOTE)
   local REMOTE = vim.fn.input('what repo ? ', DEFAULT_REMOTE)
   local PULL = vim.fn.input('Use PUll (y/n) ? ')
-  local BRANCH = vim.fn.system('git symbolic-ref --short HEAD'):gsub('\n',''):gsub('\r','')
+  local BRANCH = vim.fn.system('git symbolic-ref --short HEAD'):gsub('\n', ''):gsub('\r', '')
   local TARGET_HOST = REMOTE .. ' ' .. BRANCH
   local PUSH =
       ' [[ $(git diff --check) == "" ]] && git push ' ..
@@ -48,13 +42,16 @@ end
 ---@param opts string | nil remote
 ---@return nil vim.cmd commit, pull, push with ssh,
 M.gitSshPush = function(opts)
+  if M.gitCommit() == 'err' then
+    return
+  end
   local DEFAULT_REMOTE
   if opts == nil then
     DEFAULT_REMOTE = 'origin'
   else
     DEFAULT_REMOTE = opts
   end
-  return vim.cmd('term ' .. M.gitCommitCmd() .. M.addSsh(' && ') .. M.gitPush(DEFAULT_REMOTE))
+  return vim.cmd('term ' .. M.addSsh(' && ') .. M.gitPush(DEFAULT_REMOTE))
 end
 ---@param opts string | nil remote name
 ---@return nil vim.cmd pull with ssh,
