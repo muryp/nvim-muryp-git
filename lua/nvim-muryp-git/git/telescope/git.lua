@@ -8,14 +8,20 @@ M.listRemote = function(callback)
   picker({
     opts = LIST_REMOTE,
     callBack = callback,
-    title = "choose remote want to pull"
+    title = "choose remote"
   })
 end
 
 ---@param selection string|string[] user select
----@param cmd function arg selection => string
+---@param opts optsGitMainCmd
 ---@return nil callback exec callback with selection in first arg
-local isMultiSelect = function(selection, cmd)
+local cmdGitMain = function(selection, opts)
+  ---defind cmd to exec
+  ---@param remote string user select
+  local cmd = function(remote)
+    opts.remote = remote
+    cmdGit.gitMainCmd(opts)
+  end
   if type(selection) == 'table' then
     for _, v in pairs(selection) do
       cmd(v)
@@ -30,34 +36,28 @@ M.push = function()
   ---defind callback/after enter
   ---@param selection string|string[] user select
   local callback = function(selection)
-  ---defind cmd to exec
-  ---@param remote string user select
-    local cmd = function(remote)
-      cmdGit.gitMainCmd({
+    cmdGitMain(selection,
+      {
         add = true,
         commit = true,
         ssh = true,
-        remote = remote,
         pull_quest = true,
         push = true,
       })
-    end
-    isMultiSelect(selection, cmd)
   end
   M.listRemote(callback)
 end
 
 ---@return nil gitPull git pull with opts remote
 M.pull = function()
-  local function callback(selection)
-    local cmd = function(remote)
-      cmdGit.gitMainCmd({
+  ---defind callback/after enter
+  ---@param selection string|string[] user select
+  local callback = function(selection)
+      cmdGitMain(selection,
+      {
         ssh = true,
-        remote = remote,
         pull = true,
       })
-    end
-    isMultiSelect(selection, cmd)
   end
   M.listRemote(callback)
 end
