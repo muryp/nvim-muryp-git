@@ -84,7 +84,7 @@ M.maps = function()
       o = { require('nvim-muryp-git.telescope.gh.ghIssue.maps').addIssue, "ADD_ISSUE_TO_CHACE" },
       a = { ':term gh issue create<CR>', "ADD_ISSUE" },
     },
-    s = { ':Telescope git_status<CR>', "STATUS" },
+    a = { ':Telescope git_status<CR>', "LIST_ADD_TO_STAGGING" },
     c = { ':term git commit<CR>', "COMMIT" },
     v = { M.gitCommit, "ADD_ALL+COMMIT" },
     p = {

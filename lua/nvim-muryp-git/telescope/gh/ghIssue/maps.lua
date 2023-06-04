@@ -18,11 +18,16 @@ M.open        = function()
 end
 M.push        = function()
   local VAR          = getVar()
-  local CURRENT_FILE = VAR.getCurrentFile
+  local CURRENT_FILE = VAR.getFile
+  local REGEX        = [[ | sed -z 's/<!--.*-->//g' | sed -e '/^+++/,/^+++/d']]
+  local BODY_ISSUE   = [[cat ]] .. CURRENT_FILE .. REGEX
   local ISSUE_NUMBER = VAR.getIssue
-  local BODY_ISSUE   = CURRENT_FILE:gsub("<!--.*-->\n", ""):gsub("+++.*+++\n", ""):gsub("\n[^\n]*$", ""):gsub('"', '\\"')
-      :gsub('\n', '\\\\n'):gsub('`', '\\`'):gsub('#', '\\#')
-  vim.cmd('term gh issue edit ' .. ISSUE_NUMBER .. ' --body ' .. '"$(echo "' .. BODY_ISSUE .. '")"')
+  local PUSH_INTO_GH = vim.fn.system('gh issue edit ' .. ISSUE_NUMBER .. ' --body ' .. '"$(' .. BODY_ISSUE .. ')"') ---@type string
+  if string.find(PUSH_INTO_GH, "error") then
+    vim.api.nvim_err_writeln(PUSH_INTO_GH)
+    return
+  end
+  print('succes push : '..PUSH_INTO_GH)
 end
 M.update      = function()
   local ISSUE_NUMBER = getVar().getIssue ---@type number
