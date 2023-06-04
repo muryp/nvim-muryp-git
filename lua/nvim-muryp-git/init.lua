@@ -1,7 +1,6 @@
 local mapping = require('nvim-muryp-git.utils.mapping')
 local MAPS    = require('nvim-muryp-git.defaultMaps')
 local M       = {}
-print(vim.inspect(MAPS))
 
 M.git = require('nvim-muryp-git.git')
 local Setup = {

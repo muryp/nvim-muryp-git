@@ -6,7 +6,7 @@ return {
   b = { ':Telescope git_branches<CR>', "BRANCH" },
   f = { ':Telescope git_flow<CR>', "FLOW" },
   i = {
-    c = { ':Telescope git_issue_cache<CR>', "EDIT_ISSUE_ON_CACHE" },
+    c = { ':Telescope git_issue_cache<CR>', "LIST_ISSUE_ON_CACHE" },
     i = { ':Telescope git_issue<CR>', "EDIT_ISSUE" },
     o = { IMPORT_GH_MAPS .. ".addIssue", "ADD_ISSUE_TO_CHACE" },
     a = { ':term gh issue create<CR>', "ADD_ISSUE" },
