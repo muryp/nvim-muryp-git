@@ -2,7 +2,7 @@ local mapping = require('nvim-muryp-git.utils.mapping')
 
 local M = {}
 ---@return string
-M.addSsh = function()
+M.SSH_CMD = function()
   local SshPath = require('nvim-muryp-git').Setup.SSH_PATH
   local SSH_PATH = ''
   for _, PATH in pairs(SshPath) do
@@ -10,6 +10,7 @@ M.addSsh = function()
   end
   return [[eval "$(ssh-agent -s)" && ssh-add ]] .. SSH_PATH
 end
+
 ---@param callback function callback if success
 ---@return function exec when not conflict
 local cekConflick = function(callback)
@@ -20,7 +21,7 @@ local cekConflick = function(callback)
     return vim.api.nvim_err_writeln(isConflict)
   end
 end
----@param opts {ssh:boolean|nil,add:boolean|nil,commit:boolean|nil,pull:boolean|nil,push:boolean|nil,pull_quest:boolean|nil,remote_quest:boolean|nil} is return string or vim cmd
+---@param opts {ssh:boolean|nil,add:boolean|nil,commit:boolean|nil,pull:boolean|nil,push:boolean|nil,pull_quest:boolean|nil,remote_quest:boolean|nil,remote:string} is return string or vim cmd
 ---@return function : return cmd git ?add, ?commit, ?pull, ?push with ?ssh
 M.gitMainCmd = function(opts)
   return cekConflick(function()
@@ -33,9 +34,12 @@ M.gitMainCmd = function(opts)
       CMD = CMD .. 'git commit && '
     end
     if opts.ssh == true then
-      CMD = CMD .. M.addSsh() .. ' && '
+      CMD = CMD .. M.SSH_CMD() .. ' && '
     end
     local REMOTE = require('nvim-muryp-git').Setup.DEFAULT_REMOTE
+    if opts.remote ~= nil then
+      REMOTE = opts.remote
+    end
     if opts.remote_quest ~= nil then
       REMOTE = vim.fn.input('what repo ? ', REMOTE)
       if REMOTE == '' then
@@ -52,7 +56,7 @@ M.gitMainCmd = function(opts)
       isPull = vim.fn.input('Use PUll (y/n) ? ')
     end
     if opts.pull == true or isPull == 'y' or isPull == 'Y' then
-      vim.cmd('!git pull ' .. TARGET_HOST)
+      vim.cmd('term ' .. M.SSH_CMD() .. ' && git pull ' .. TARGET_HOST)
     end
     cekConflick(function()
       if opts.push == true then
@@ -100,7 +104,7 @@ M.maps = function()
           push = true,
         })
       end, "PUSH" },
-      a = { ':term ' .. M.addSsh() .. ' && git push --all<CR>', "PUSH ALL WITH SSH" },
+      a = { ':term ' .. M.SSH_CMD() .. ' && git push --all<CR>', "PUSH ALL WITH SSH" },
       A = { ':term git push --all<CR>', "PUSH ALL" },
       s = { function()
         M.gitMainCmd({
@@ -119,7 +123,7 @@ M.maps = function()
     P = {
       name = "PULL",
       A = { ':term git pull --all<CR>', "PULL ALL" },
-      a = { ':term ' .. M.addSsh() .. ' && git pull --all<CR>', "PULL ALL WITH SSH" },
+      a = { ':term ' .. M.SSH_CMD() .. ' && git pull --all<CR>', "PULL ALL WITH SSH" },
       p = { function()
         M.gitMainCmd({
           remote_quest = true,

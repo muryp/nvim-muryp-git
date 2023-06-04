@@ -2,18 +2,13 @@ local picker = require "nvim-muryp-git.utils.picker"
 
 return function()
   local ListBranch = {} ---@type string[]
-  local LIST_BRANCH = vim.api.nvim_command_output('echo system("git branch")') ---@type string
-  local NAME_CURRENT_BRANCH = vim.api.nvim_command_output('echo system("echo $(git symbolic-ref --short HEAD)")') ---@type string
-  local BRANCH_DEL_ENTER = string.gsub(NAME_CURRENT_BRANCH, "\n", "")
-  ---check is not current branch and *
-  for BRANCH in string.gmatch(LIST_BRANCH, "%S+") do
-    if BRANCH ~= "*" and BRANCH ~= BRANCH_DEL_ENTER then
-      table.insert(ListBranch, BRANCH)
-    end
+  local NAME_CURRENT_BRANCH = vim.fn.system('echo $(git symbolic-ref --short HEAD)'):gsub('\n', ''):gsub('\r', '') ---@type string
+  ListBranch = {}
+  for branch in io.popen("git branch --list | grep -v $(git rev-parse --abbrev-ref HEAD)"):lines() do
+    table.insert(ListBranch, branch)
   end
-
   local function callback(selection)
-    print(vim.inspect(vim.cmd('!git checkout ' .. selection)))
+    vim.cmd('term git checkout ' .. selection .. ' && git merge ' .. NAME_CURRENT_BRANCH)
   end
 
   picker({

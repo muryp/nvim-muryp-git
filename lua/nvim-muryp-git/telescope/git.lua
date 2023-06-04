@@ -6,7 +6,14 @@ local M = {}
 M.push = function()
   local LIST_REMOTE = vim.fn.systemlist("git remote") --- @type string[]
   local function callback(selection)
-    cmdGit.gitSshPush(selection)
+    cmdGit.gitMainCmd({
+      add = true,
+      commit = true,
+      ssh = true,
+      remote = selection,
+      pull_quest = true,
+      push = true,
+    })
   end
   picker({
     opts = LIST_REMOTE,
@@ -19,7 +26,11 @@ end
 M.pull = function()
   local LIST_REMOTE = vim.fn.systemlist("git remote") --- @type string[]
   local function callback(selection)
-    cmdGit.pull(selection)
+    cmdGit.gitMainCmd({
+      ssh = true,
+      remote = selection,
+      pull = true,
+    })
   end
   picker({
     opts = LIST_REMOTE,
