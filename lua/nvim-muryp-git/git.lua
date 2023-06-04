@@ -56,7 +56,7 @@ M.gitSshPush = function(opts)
   else
     DEFAULT_REMOTE = opts
   end
-  return vim.cmd('term ' .. CMD_COMMIT .. M.addSsh(' && ') .. M.gitPush(DEFAULT_REMOTE))
+  return vim.cmd(CMD_COMMIT .. M.addSsh(' && ') .. M.gitPush(DEFAULT_REMOTE))
 end
 ---@param opts string | nil remote name
 ---@return nil vim.cmd pull with ssh,
