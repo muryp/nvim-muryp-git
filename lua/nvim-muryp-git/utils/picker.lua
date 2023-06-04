@@ -25,7 +25,7 @@ return function(Arg)
     timer:start(1000, 0,
       vim.schedule_wrap(function()
         if CONTENT_RESULT[index] == nil then
-          local ghIssue = require('nvim-muryp-git.telescope.gh.ghIssue').getContent(index)[1]
+          local ghIssue = require('nvim-muryp-git.gh').getContent(index)[1]
           ---chaching fetch from gh issue
           CONTENT_RESULT[index] = vim.split(ghIssue, "\n")
         end

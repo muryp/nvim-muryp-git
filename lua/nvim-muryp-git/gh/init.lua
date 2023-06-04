@@ -1,5 +1,5 @@
-local getIssue = require "nvim-muryp-git.telescope.gh.ghIssue.getIssue"
-local headerInfo = require "nvim-muryp-git.telescope.gh.ghIssue.headerInfo"
+local getIssue = require "nvim-muryp-git.gh.getIssue"
+local headerInfo = require "nvim-muryp-git.gh.headerInfo"
 local M = {}
 
 ---@param ISSUE_NUMBER number: the index in line_manager
@@ -12,7 +12,7 @@ M.getContent = function(ISSUE_NUMBER)
       ISSUE_NUMBER .. '-' .. GetIssueData.title:gsub('/',' or ') .. '-' .. GetIssueData.state .. ".md"
   local FILE_RESULT = DIR_LOC_CACHE .. FILE_NAME:gsub(' ','_') ---@type string
   local ISSUE_HEADER = '+++' .. HEADER_ISSUE_STR .. '+++\n' ---@type string
-  local HELP_HEADER = require('nvim-muryp-git.telescope.gh.ghIssue.helper')
+  local HELP_HEADER = require('nvim-muryp-git.gh.helper')
   local content = ISSUE_HEADER .. HELP_HEADER .. string.gsub(GetIssueData.body, "\r", "") ---@type string
   return { content, FILE_RESULT, DIR_LOC_CACHE }
 end

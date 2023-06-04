@@ -1,4 +1,4 @@
-local ghIssue = require('nvim-muryp-git.telescope.gh.ghIssue').ghIssue
+local ghIssue = require('nvim-muryp-git.gh').ghIssue
 
 local M       = {}
 ---@return {getFile:string,getIssue:number,gitRoot:string}

@@ -46,10 +46,10 @@ M.Setup = Setup
 M.resgisterTelescope = function()
   ---add picker telescope
   local plug               = require('telescope.builtin')
-  local gitFlow            = require('nvim-muryp-git.telescope.gitFlow')
-  local ghIssue            = require('nvim-muryp-git.telescope.gh').getListIssue
-  local ghCache            = require('nvim-muryp-git.telescope.gh').getListIssueCache
-  local git                = require('nvim-muryp-git.telescope.git')
+  local gitFlow            = require('nvim-muryp-git.git.telescope.gitflow')
+  local ghIssue            = require('nvim-muryp-git.gh.telescope').getListIssue
+  local ghCache            = require('nvim-muryp-git.gh.telescope').getListIssueCache
+  local git                = require('nvim-muryp-git.git.telescope.git')
 
   plug.git_flow            = gitFlow
   plug.git_issue           = ghIssue

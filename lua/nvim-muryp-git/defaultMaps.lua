@@ -1,5 +1,5 @@
 local M = require('nvim-muryp-git.git')
-local IMPORT_GH_MAPS = ":lua require('nvim-muryp-git.telescope.gh.ghIssue.cmd')"
+local IMPORT_GH_MAPS = ":lua require('nvim-muryp-git.gh.cmd')"
 
 return {
   name = "GIT",
