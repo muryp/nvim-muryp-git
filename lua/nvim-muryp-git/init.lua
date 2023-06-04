@@ -16,11 +16,12 @@ local Setup = {
     local GET_GIT_DIR = string.gsub(vim.fn.system("git rev-parse --show-toplevel"), '\n', '')
     local DIR_ISSUE   = GET_GIT_DIR .. '/.git/muryp/gh_issue/'
     return DIR_ISSUE
-  end
+  end,
+  DEFAULT_REMOTE = 'origin',
 
 }
 
----@param arg {mapping:{git:function,issue:function},SSH_PATH:string[],CACHE_DIR:function,}
+---@param arg {mapping:{git:function,issue:function},SSH_PATH:string[],CACHE_DIR:function,DEFAULT_REMOTE:string}
 M.setup = function(arg)
   if arg.mapping ~= nil then
     if arg.mapping.git ~= nil then
@@ -35,6 +36,9 @@ M.setup = function(arg)
   end
   if arg.CACHE_DIR ~= nil then
     Setup.CACHE_DIR = arg.CACHE_DIR
+  end
+  if arg.DEFAULT_REMOTE ~= nil then
+    Setup.DEFAULT_REMOTE = arg.DEFAULT_REMOTE
   end
   Setup.mapping.git()
 end
