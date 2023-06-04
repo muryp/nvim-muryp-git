@@ -1,4 +1,5 @@
 local M = {}
+---@class optsGitMainCmd : {ssh?:boolean,add?:boolean,commit?:boolean,pull?:boolean,push?:boolean,pull_quest?:boolean,remote_quest?:boolean,remote?:string} opts what todo
 
 ---@return string
 M.SSH_CMD = function()
@@ -20,20 +21,21 @@ local cekConflick = function(callback)
     return vim.api.nvim_err_writeln(isConflict)
   end
 end
----@param opts {ssh:boolean|nil,add:boolean|nil,commit:boolean|nil,pull:boolean|nil,push:boolean|nil,pull_quest:boolean|nil,remote_quest:boolean|nil,remote:string} is return string or vim cmd
+---@param opts optsGitMainCmd is return string or vim cmd
 ---@return function : return cmd git ?add, ?commit, ?pull, ?push with ?ssh
 M.gitMainCmd = function(opts)
   return cekConflick(function()
     local isCommited = vim.fn.system('[[ $(git status --porcelain) ]] && echo true')
-    local CMD = 'term '
+    local CMD = ''
     if isCommited ~= '' and opts.commit == true then
       if opts.add == true then
         CMD = CMD .. 'git add . && '
       end
       CMD = CMD .. 'git commit && '
     end
+    local SSH_CMD = ''
     if opts.ssh == true then
-      CMD = CMD .. M.SSH_CMD() .. ' && '
+      SSH_CMD = M.SSH_CMD() .. ' && '
     end
     local REMOTE = require('nvim-muryp-git').Setup.DEFAULT_REMOTE
     if opts.remote ~= nil then
@@ -55,13 +57,15 @@ M.gitMainCmd = function(opts)
       isPull = vim.fn.input('Use PUll (y/n) ? ')
     end
     if opts.pull == true or isPull == 'y' or isPull == 'Y' then
-      vim.cmd('term ' .. M.SSH_CMD() .. ' && git pull ' .. TARGET_HOST)
+      vim.cmd('term ' .. SSH_CMD .. 'git pull ' .. TARGET_HOST)
     end
     cekConflick(function()
       if opts.push == true then
-        CMD = CMD .. 'git push ' .. TARGET_HOST .. ' && '
+        CMD = CMD .. 'git push ' .. TARGET_HOST
       end
-      vim.cmd(CMD)
+      if CMD ~= '' then
+        vim.cmd('term ' .. SSH_CMD .. CMD)
+      end
     end)
   end)
 end
