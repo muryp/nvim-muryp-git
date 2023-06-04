@@ -196,6 +196,14 @@ require('nvim-muryp-git.gh.cmd').delete()
 ```lua
 require('nvim-muryp-git.gh.cmd').addIssue()
 ```
+- list remote
+```lua
+---@param selection string|string[] user select
+local callback = function(selection)
+  ---... cmd want to exec
+end
+require('nvim-muryp-git.git.telescope.git').listRemote(callback)
+```
 
 ## Telescope Register
 - `Telescope git_flow` : checkout and merge
