@@ -1,12 +1,16 @@
 local mapping = require('nvim-muryp-git.utils.mapping')
 
 local M = {}
----@return string : is error or not
-M.gitCommit = function()
+---@param isGetString boolean is return string or vim cmd
+---@return string|nil : return cmd or string
+M.gitCommit = function(isGetString)
   local isConflict = vim.fn.system('git diff --check')
   if isConflict == '' then
-    vim.cmd('term [[ $(git status --porcelain) ]] && git add . && git commit')
-    return ''
+    local CMD_GIT = 'term [[ $(git status --porcelain) ]] && git add . && git commit'
+    if isGetString == true then
+      return CMD_GIT
+    end
+    return vim.cmd(CMD_GIT)
   else
     vim.api.nvim_err_writeln(isConflict)
     return 'err'
@@ -42,7 +46,8 @@ end
 ---@param opts string | nil remote
 ---@return nil vim.cmd commit, pull, push with ssh,
 M.gitSshPush = function(opts)
-  if M.gitCommit() == 'err' then
+  local CMD_COMMIT = M.gitCommit(true)
+  if CMD_COMMIT == 'err' then
     return
   end
   local DEFAULT_REMOTE
@@ -51,7 +56,7 @@ M.gitSshPush = function(opts)
   else
     DEFAULT_REMOTE = opts
   end
-  return vim.cmd('term ' .. M.addSsh(' && ') .. M.gitPush(DEFAULT_REMOTE))
+  return vim.cmd('term ' .. CMD_COMMIT .. M.addSsh(' && ') .. M.gitPush(DEFAULT_REMOTE))
 end
 ---@param opts string | nil remote name
 ---@return nil vim.cmd pull with ssh,
