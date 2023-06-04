@@ -33,7 +33,7 @@ M.gitMainCmd = function(opts)
       CMD = CMD .. 'git commit && '
     end
     if opts.ssh == true then
-      CMD = CMD .. M.addSsh()
+      CMD = CMD .. M.addSsh() .. ' && '
     end
     local REMOTE = require('nvim-muryp-git').Setup.DEFAULT_REMOTE
     if opts.remote_quest ~= nil then
