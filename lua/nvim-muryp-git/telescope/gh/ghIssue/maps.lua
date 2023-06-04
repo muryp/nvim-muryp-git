@@ -1,13 +1,13 @@
 local ghIssue = require('nvim-muryp-git.telescope.gh.ghIssue').ghIssue
 
 local M       = {}
----@return {getFile:string,getCurrentFile:string,getIssue:number,gitRoot:string}
+---@return {getFile:string,getIssue:number,gitRoot:string}
 local getVar  = function()
   local getFile          = vim.api.nvim_command_output('echo expand("%:p")') ---@type string
   local GET_CONTENT_FILE = vim.fn.system('cat ' .. getFile) ---@type string
   local _, _, getIssue   = string.find(GET_CONTENT_FILE, "https://github.com/.*/.*/issues/(%d*)") ---@type nil,nil,string
   local gitRoot          = vim.fn.system("git rev-parse --show-toplevel"):gsub('\n', '') ---@type string
-  return { getFile = getFile, getCurrentFile = GET_CONTENT_FILE, getIssue = getIssue, gitRoot = gitRoot }
+  return { getFile = getFile, getIssue = getIssue, gitRoot = gitRoot }
 end
 M.edit        = function()
   local arg = getVar()
