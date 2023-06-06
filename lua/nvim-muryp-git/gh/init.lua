@@ -20,7 +20,7 @@ end
 ---create file and add maps
 M.ghIssue = function(ISSUE_NUMBER)
   local content = M.getContent(ISSUE_NUMBER)
-  os.execute("mkdir " .. content[3])
+  os.execute("mkdir -p " .. content[3])
   os.execute('echo "' .. content[1] .. '" > ' .. content[2])
   vim.cmd('e ' .. content[2])
 end
