@@ -21,31 +21,119 @@ Plugin untuk memudahkan penggunaan git dan gh issue di nvim, dengan bantuan plug
 - telescope : untuk daftar isi/pencarian issue
 ## install
 - packer
-
 ```lua
 use {
   'muryp/nvim-muryp-git',
   after = 'telescope.nvim',
   config = function()
-    require('nvim-muryp-git').setup {
-      -- mapping = {
-        -- issue = function()
-        --   add mapping issue in here
-        -- end,
-        -- git = function()
-        --   add mapping git in here
-        -- end,
-      -- },
-      SSH_PATH = { '~/ssh/github' },
-      -- CACHE_DIR = function()
-      --   return 'location/cache'
-      -- end,
-    }
+    require('nvim-muryp-git').setup()
   end
 }
-
 ```
-## how use it
+## default setup
+```lua
+local MAPS = {
+  name = "GIT",
+  b = { ':Telescope git_branches<CR>', "BRANCH" },
+  f = { ':Telescope git_flow<CR>', "FLOW" },
+  i = {
+    c = { ':Telescope git_issue_cache<CR>', "LIST_ISSUE_ON_CACHE" },
+    i = { ':Telescope git_issue<CR>', "EDIT_ISSUE" },
+    o = { IMPORT_GH_MAPS .. ".addIssue", "ADD_ISSUE_TO_CHACE" },
+    a = { ':term gh issue create<CR>', "ADD_ISSUE" },
+    p = { IMPORT_GH_MAPS .. ".push()<CR>", "PUSH_INTO_GH" },
+    e = { IMPORT_GH_MAPS .. ".edit()<CR>", "EDIT" },
+    u = { IMPORT_GH_MAPS .. ".update()<CR>", "UPDATE_LOCAL" },
+    d = { IMPORT_GH_MAPS .. ".delete()<CR>", "DELETE" },
+  },
+  s = { ':Telescope git_status<CR>', "GIT_STATUS" },
+  c = { ':term git commit<CR>', "COMMIT" },
+  v = { function()
+    M.gitMainCmd({
+      add = true,
+      commit = true,
+    })
+  end, "ADD_ALL+COMMIT" },
+  p = {
+    name = "PUSH",
+    p = { function()
+      M.gitMainCmd({
+        add = true,
+        commit = true,
+        ssh = true,
+        remote_quest = true,
+        pull_quest = true,
+        push = true,
+      })
+    end, "ADD+COMMIT+SSH+PULL+PUSH" },
+    P = { function()
+      M.gitMainCmd({
+        remote_quest = true,
+        push = true,
+      })
+    end, "PUSH" },
+    a = { function ()
+      vim.cmd(':term ' .. M.SSH_CMD() .. ' && git push --all<CR>')
+    end, "PUSH ALL WITH SSH" },
+    A = { ':term git push --all<CR>', "PUSH ALL" },
+    s = { function()
+      M.gitMainCmd({
+        push = true,
+        remote_quest = true,
+        pull_quest = true,
+      })
+    end, "SSH+PULL+PUSH" },
+    S = { function()
+      M.gitMainCmd({
+        push = true,
+        remote_quest = true,
+      })
+    end, "SSH+PUSH" },
+  },
+  P = {
+    name = "PULL",
+    A = { ':term git pull --all<CR>', "PULL ALL" },
+    a = { function ()
+      vim.cmd(':term ' .. M.SSH_CMD() .. ' && git pull --all<CR>')
+    end, "PULL ALL WITH SSH" },
+    p = { function()
+      M.gitMainCmd({
+        remote_quest = true,
+        pull = true,
+      })
+    end, "PULL THIS BRANCH" },
+    P = { function()
+      M.gitMainCmd({
+        remote_quest = true,
+        pull = true,
+        ssh = true,
+      })
+    end, "PULL THIS BRANCH WITH SSH" },
+  },
+  o = {
+    name = "WITH TELESCOPE OPTS",
+    p = { ':Telescope git_commit_ssh_push<CR>', "COMMIT+SSH+PULL+PUSH" },
+    P = { ':Telescope git_pull<CR>', "PULL" },
+  },
+}
+require('nvim-muryp-git').setup {
+  {
+    mapping = function()
+      mapping({ g = MAPS }, { prefix = "<leader>", noremap = true })
+    end,
+    SSH_PATH = { '$HOME/.ssh/github' },
+    ---@return string DIR_ISSUE location of dir cache
+    CACHE_DIR = function()
+      local GET_GIT_DIR = string.gsub(vim.fn.system("git rev-parse --show-toplevel"), '\n', '')
+      local DIR_ISSUE   = GET_GIT_DIR .. '/.git/muryp/gh_issue/'
+      return DIR_ISSUE
+    end,
+    DEFAULT_REMOTE = 'origin',
+
+  }
+}
+```
+## cara penggunaan
 ### git
 Tekan `<leader>g` untuk melihat cmd apa saja (dibutuhkan plugin whichkey) :
 - `<leader>ga` : menambahkan issue repo github
@@ -65,54 +153,49 @@ Tekan `<leader>g` untuk melihat cmd apa saja (dibutuhkan plugin whichkey) :
 - `<leader>gop` : git add all, commit, ssh, pull dan push ke remote dengan pilihan nama remote
 - `<leader>goP` : git pull dengan pilihan nama remote
 ### github issue
-- pilih issue menggunakan `<leader><leader>gi` atau `<leader><leader>gh`
-- setelah itu, tekan `<leader><leader>g` untuk menampilkan mapping (dibutuhkan plugin whichkey)
+- tekan `<leader>gii` untuk melihat issue (online)
+or
+- use `<leader>gic` untuk melihat issue (offline)
+- setelah itu, tekan `<leader>gp` memperbarui issue di github
 
 ## Api
-- git commit
+- git cmd main
 ```lua
----menambahkan cmd dan commit
-require('nvim-muryp-git.git').gitCommit()
+M.gitMainCmd({
+  add = true,          -- use git add . ? => boolean|nil
+  commit = true,       -- use commit? => boolean|nil
+  ssh = true,          -- use ssh? => boolean|nil
+  pull = true,         -- use pull? => boolean|nil
+  pull_quest = true,   -- ask use pull => boolean|nil
+  push = true,         -- push => boolean|nil
+  remote_quest = true, -- custom remote => boolean|nil
+  remote = true,       -- default remote => string
+})
 ```
-- add ssh
+- edit info di terminal
 ```lua
----generate string cmd to add ssh (untuk ssh)
----@param FIRST_LETTER string FIRST_LETTER cmd (cmd diawal)
----@return string
-require('nvim-muryp-git.git').addSsh(' && ')
+require('nvim-muryp-git.gh.cmd').edit()
 ```
-- sshpush
+- memperbarui github issue
 ```lua
----@param opts string | nil remote
----@return nil vim.cmd commit, pull, push with ssh,
-require('nvim-muryp-git.git').gitSshPush()
+require('nvim-muryp-git.gh.cmd').push()
 ```
-- pull
+- hapus issue
+> peringatan: ini akan dihapus permanen di github issue
 ```lua
----@param opts string | nil remote name
----@return nil vim.cmd pull with ssh,
-require('nvim-muryp-git.git').pull()
+require('nvim-muryp-git.gh.cmd').delete()
 ```
-- edit melalui cli
+- menambahkan cache issue dengan nomor issue
 ```lua
-require('nvim-muryp-git.telescope.gh.ghIssue.maps').edit()
+require('nvim-muryp-git.gh.cmd').addIssue()
 ```
-- buka di browser
+- daftar remote
 ```lua
-require('nvim-muryp-git.telescope.gh.ghIssue.maps').open()
-```
-- memperbarui file cache
-```lua
-require('nvim-muryp-git.telescope.gh.ghIssue.maps').push()
-```
-- megnhapus issue
-> peringatan: ini benar-benar menghapus di github
-```lua
-require('nvim-muryp-git.telescope.gh.ghIssue.maps').delete()
-```
-- memperbarui file cache dengan nomor issue
-```lua
-require('nvim-muryp-git.telescope.gh.ghIssue.maps').addIssue()
+---@param selection string|string[] user select
+local callback = function(selection)
+  ---... cmd want to exec
+end
+require('nvim-muryp-git.git.telescope.git').listRemote(callback)
 ```
 ## Lisensi
 Plugin `nvim-muryp-git` didistribusikan dengan lisensi `Apache License 2.0`. Silakan merujuk ke berkas `LICENSE` untuk informasi lebih lanjut mengenai lisensi ini.

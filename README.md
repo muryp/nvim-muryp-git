@@ -29,7 +29,6 @@ use {
     require('nvim-muryp-git').setup()
   end
 }
-
 ```
 ## default setup
 ```lua
@@ -156,10 +155,10 @@ use `<leader>g` then will show what can do (wichkey required) :
 - `<leader>goP` : git pull with opts remote name
 
 ### github issue
-- use `<leader>gi` to get list issue (online)
+- use `<leader>gii` to get list issue (online)
 or
-- use `<leader>gh` to get list issue (offline)
-- after choose issue, press `<leader><leader>g` then will show what we can do
+- use `<leader>gic` to get list issue (offline)
+- after choose issue, press `<leader>gp` then will push into github issue
 
 ## Api
 - git cmd main
@@ -175,13 +174,9 @@ M.gitMainCmd({
   remote = true,       -- default remote => string
 })
 ```
-- edit in cli
+- edit info in terminal
 ```lua
 require('nvim-muryp-git.gh.cmd').edit()
-```
-- open in browser
-```lua
-require('nvim-muryp-git.gh.cmd').open()
 ```
 - update local file
 ```lua
@@ -192,7 +187,7 @@ require('nvim-muryp-git.gh.cmd').push()
 ```lua
 require('nvim-muryp-git.gh.cmd').delete()
 ```
-- update local file with number
+- add cache issue file with number issue
 ```lua
 require('nvim-muryp-git.gh.cmd').addIssue()
 ```
