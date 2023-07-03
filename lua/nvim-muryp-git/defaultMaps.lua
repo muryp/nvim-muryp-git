@@ -8,7 +8,7 @@ return {
   i = {
     c = { ':Telescope git_issue_cache<CR>', "LIST_ISSUE_ON_CACHE" },
     i = { ':Telescope git_issue<CR>', "EDIT_ISSUE" },
-    o = { IMPORT_GH_MAPS .. ".addIssue", "ADD_ISSUE_TO_CHACE" },
+    o = { IMPORT_GH_MAPS .. ".addIssue()<CR>", "ADD_ISSUE_BY_NUM" },
     a = { ':term gh issue create<CR>', "ADD_ISSUE" },
     p = { IMPORT_GH_MAPS .. ".push()<CR>", "PUSH_INTO_GH" },
     e = { IMPORT_GH_MAPS .. ".edit()<CR>", "EDIT" },

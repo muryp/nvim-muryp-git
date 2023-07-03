@@ -9,7 +9,7 @@ return function(Arg)
     -- "closed",
     "closedAt",
     -- "comments",
-    -- "createdAt",
+    "createdAt",
     -- "id",
     "labels",
     "milestone",
