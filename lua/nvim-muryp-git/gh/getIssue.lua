@@ -6,7 +6,7 @@ return function(Arg)
     "assignees",
     "author",
     "body",
-    -- "closed",
+    "closed",
     "closedAt",
     -- "comments",
     "createdAt",
