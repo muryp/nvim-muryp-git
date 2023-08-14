@@ -1,7 +1,7 @@
-local ghIssue = require('nvim-muryp-git.gh').ghIssue
-local M       = {}
+local ghIssue   = require('nvim-muryp-git.gh').ghIssue
+local M         = {}
 ---@return {getFile:string,getIssue:number,gitRoot:string,updatedAt:string}
-local getVar  = function()
+local getVar    = function()
   local getFile          = vim.api.nvim_command_output('echo expand("%:p")') ---@type string
   local GET_CONTENT_FILE = vim.fn.system('cat ' .. getFile) ---@type string
   local _, _, getIssue   = string.find(GET_CONTENT_FILE, "https://github.com/.*/.*/issues/(%d*)") ---@type nil,nil,string
@@ -14,20 +14,20 @@ local getVar  = function()
   end
   return { getFile = getFile, getIssue = getIssue, gitRoot = gitRoot, updatedAt = updatedAt }
 end
-M.edit        = function()
+M.edit          = function()
   local arg = getVar()
   if arg == nil then
     return
   end
   vim.cmd('term cd ' .. arg.gitRoot .. ' && gh issue edit ' .. arg.getIssue)
 end
-M.open        = function()
+M.open          = function()
   if getVar() == nil then
     return
   end
   vim.cmd('!gh issue view -w ' .. getVar().getIssue)
 end
-M.push        = function()
+M.push          = function()
   if getVar() == nil then
     return
   end
@@ -59,14 +59,14 @@ M.push        = function()
   end
   vim.api.nvim_err_writeln('youre not update into gh. update local issue or update gh from local')
 end
-M.update      = function()
+M.update        = function()
   if getVar() == nil then
     return
   end
   local ISSUE_NUMBER = getVar().getIssue ---@type number
   ghIssue(ISSUE_NUMBER)
 end
-M.delete      = function()
+M.delete        = function()
   if getVar() == nil then
     return
   end
@@ -74,11 +74,28 @@ M.delete      = function()
   vim.cmd('term gh issue delete ' .. ISSUE_NUMBER .. ' && rm %')
   vim.cmd('bd')
 end
-M.addIssue    = function()
+M.addIssue      = function()
   local NUMBER_ISSUE = vim.fn.input('number issue ? ') ---@type number
   if NUMBER_ISSUE == '' or NUMBER_ISSUE == nil then
     return print('type number please...')
   end
   ghIssue(NUMBER_ISSUE)
 end
+---@param CMD string : cmd issue args
+local optsIssue = function(CMD)
+  local ISSUE_NUMBER = getVar().getIssue
+  local PUSH_INTO_GH = vim.fn.system('gh issue ' .. CMD .. ' ' .. ISSUE_NUMBER) ---@type string
+  if string.find(PUSH_INTO_GH, "error") then
+    vim.api.nvim_err_writeln(PUSH_INTO_GH)
+    return
+  end
+  M.update()
+  print('succes ' .. CMD .. ' : ' .. PUSH_INTO_GH)
+end
+M.pin           = function() optsIssue('pin') end
+M.unpin         = function() optsIssue('unpin') end
+M.lock          = function() optsIssue('lock') end
+M.unlock        = function() optsIssue('unlock') end
+M.reopen        = function() optsIssue('reopen') end
+M.close         = function() optsIssue('close') end
 return M
