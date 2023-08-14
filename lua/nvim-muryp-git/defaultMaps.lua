@@ -50,12 +50,14 @@ return {
         push = true,
         remote_quest = true,
         pull_quest = true,
+        ssh=true,
       })
     end, "SSH+PULL+PUSH" },
     S = { function()
       M.gitMainCmd({
         push = true,
         remote_quest = true,
+        ssh=true,
       })
     end, "SSH+PUSH" },
   },
