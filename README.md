@@ -12,7 +12,8 @@ Language : English | [Indonesia](./README-ID.md)
 easy use git and git issue in nvim, with telescope.
 ## feature
 - shortcut : git commit, push, ssh add, pull
-- gh issue : CRUD
+- manage github from nvim :
+  - issue
 ## requirement
 - gh cli : use for issue
 - whichkey : for mapping
