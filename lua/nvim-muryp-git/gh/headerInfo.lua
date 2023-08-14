@@ -1,12 +1,15 @@
+---@param Arg {GetIssueData:getIssueData}
 return function(Arg)
-  local GetIssueData = Arg.GetIssueData ---@type Object
+  local GetIssueData = Arg.GetIssueData
   local HeaderIssue = {}
   for KEY, VAL in pairs(GetIssueData) do
+    -- extrack name
     if KEY == 'author' then
       HeaderIssue[KEY] = '"' .. GetIssueData[KEY].name .. '"'
     elseif KEY == 'labels' or KEY == 'assignees' then
       local LIST = '' --- get name label
-      for _, Val in pairs(GetIssueData[KEY]) do
+      local issueAssignLabels = GetIssueData[KEY] ---@type issueDataAssign|issueDataLabels
+      for _, Val in pairs(issueAssignLabels) do
         LIST = LIST .. '[' .. Val.name .. ']' .. ','
       end
       HeaderIssue[KEY] = '"' .. LIST .. '"'
