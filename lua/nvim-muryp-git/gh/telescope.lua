@@ -35,7 +35,12 @@ end
 
 ---issue list offline
 M.getListIssueCache = function()
-  local GET_DIR   = vim.fn.system("ls " .. cacheDir())
+  local GET_DIR     = vim.fn.system("ls " .. cacheDir())
+  local isHaveIssue = string.find(GET_DIR, 'No such file or directory')
+  if isHaveIssue then
+    vim.api.nvim_err_writeln("you haven't issue on cache")
+    return
+  end
   local ListIssue = {}
   for FILE_NAME in string.gmatch(GET_DIR, "[^\r\n]+") do
     table.insert(ListIssue, FILE_NAME)
