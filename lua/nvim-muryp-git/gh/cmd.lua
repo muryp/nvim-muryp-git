@@ -92,10 +92,16 @@ local optsIssue = function(CMD)
   M.update()
   print('succes ' .. CMD .. ' : ' .. PUSH_INTO_GH)
 end
+--- pin this current file/issue
 M.pin           = function() optsIssue('pin') end
+--- unpin this current file/issue
 M.unpin         = function() optsIssue('unpin') end
+--- lock this current file/issue
 M.lock          = function() optsIssue('lock') end
+--- unlock this current file/issue
 M.unlock        = function() optsIssue('unlock') end
+--- reopen this current file/issue
 M.reopen        = function() optsIssue('reopen') end
+--- close this current file/issue
 M.close         = function() optsIssue('close') end
 return M

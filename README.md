@@ -18,7 +18,7 @@ easy use git and git issue in nvim, with telescope.
 - gh cli : use for issue
 - whichkey : for mapping
 - git
-- nvim 0.8+
+- nvim 0.8+ (recommendation)
 - telescope : for list option
 ## install
 - packer
@@ -38,14 +38,21 @@ local MAPS = {
   b = { ':Telescope git_branches<CR>', "BRANCH" },
   f = { ':Telescope git_flow<CR>', "FLOW" },
   i = {
+    name = "GH_ISSUE",
     c = { ':Telescope git_issue_cache<CR>', "LIST_ISSUE_ON_CACHE" },
     i = { ':Telescope git_issue<CR>', "EDIT_ISSUE" },
-    o = { IMPORT_GH_MAPS .. ".addIssue", "ADD_ISSUE_TO_CHACE" },
+    o = { IMPORT_GH_MAPS .. ".addIssue()<CR>", "GET_ISSUE_BY_NUM" },
     a = { ':term gh issue create<CR>', "ADD_ISSUE" },
-    p = { IMPORT_GH_MAPS .. ".push()<CR>", "PUSH_INTO_GH" },
+    s = { IMPORT_GH_MAPS .. ".push()<CR>", "SYNC_LOCAL_TO_GH" },
+    S = { IMPORT_GH_MAPS .. ".update()<CR>", "SYNC_GH_TO_LOCAL" },
     e = { IMPORT_GH_MAPS .. ".edit()<CR>", "EDIT" },
-    u = { IMPORT_GH_MAPS .. ".update()<CR>", "UPDATE_LOCAL" },
     d = { IMPORT_GH_MAPS .. ".delete()<CR>", "DELETE" },
+    p = { IMPORT_GH_MAPS .. ".pin()<CR>", "pin" },
+    P = { IMPORT_GH_MAPS .. ".unpin()<CR>", "unpin" },
+    l = { IMPORT_GH_MAPS .. ".lock()<CR>", "lock" },
+    L = { IMPORT_GH_MAPS .. ".unlock()<CR>", "unlock" },
+    r = { IMPORT_GH_MAPS .. ".reopen()<CR>", "reopen" },
+    C = { IMPORT_GH_MAPS .. ".unlock()<CR>", "closed" },
   },
   s = { ':Telescope git_status<CR>', "GIT_STATUS" },
   c = { ':term git commit<CR>', "COMMIT" },
@@ -82,12 +89,14 @@ local MAPS = {
         push = true,
         remote_quest = true,
         pull_quest = true,
+        ssh=true,
       })
     end, "SSH+PULL+PUSH" },
     S = { function()
       M.gitMainCmd({
         push = true,
         remote_quest = true,
+        ssh=true,
       })
     end, "SSH+PUSH" },
   },
@@ -159,7 +168,18 @@ use `<leader>g` then will show what can do (wichkey required) :
 - use `<leader>gii` to get list issue (online)
 or
 - use `<leader>gic` to get list issue (offline)
-- after choose issue, press `<leader>gp` then will push into github issue
+- use `<leader>giC` : closed this issue
+- use `<leader>gis` : sync local to gh
+- use `<leader>giS` : sync from gh to current file
+- use `<leader>gie` : edit (title,body,assign,label,project,milestone)
+- use `<leader>gia` : add new issue
+- use `<leader>gid` : delete this issue both loacal and gh
+- use `<leader>gil` : lock this issue
+- use `<leader>giL` : unlock this issue
+- use `<leader>gio` : get issue by number
+- use `<leader>giu` : pin this issue
+- use `<leader>giU` : unpin this issue
+- use `<leader>gir` : reopen this issue
 
 ## Api
 - git cmd main
@@ -199,6 +219,37 @@ local callback = function(selection)
   ---... cmd want to exec
 end
 require('nvim-muryp-git.git.telescope.git').listRemote(callback)
+```
+
+- pin this current file/issue
+```lua
+--- pin this current file/issue
+M.pin
+```
+- unpin this current file/issue
+```lua
+--- unpin this current file/issue
+M.unpin
+```
+- lock this current file/issue
+```lua
+--- lock this current file/issue
+M.lock
+```
+- unlock this current file/issue
+```lua
+--- unlock this current file/issue
+M.unlock
+```
+- reopen this current file/issue
+```lua
+--- reopen this current file/issue
+M.reopen
+```
+- close this current file/issue
+```lua
+--- close this current file/issue
+M.close
 ```
 
 ## Telescope Register
