@@ -42,7 +42,7 @@ M.gitMainCmd = function(opts)
       REMOTE = opts.remote
     end
     if opts.remote_quest ~= nil then
-      REMOTE = vim.fn.input('what repo ? ', REMOTE)
+      REMOTE = vim.fn.input('what remote ? ', REMOTE)
       if REMOTE == '' then
         return vim.api.nvim_err_writeln('ERR: please input remote name')
       end
